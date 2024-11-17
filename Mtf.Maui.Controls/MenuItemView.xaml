@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
+             xmlns:cc="clr-namespace:Mtf.Maui.Controls"
+             x:Class="Mtf.Maui.Controls.MenuItemView"
+             x:DataType="cc:MenuItemView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <c:ImagePathConverter x:Key="ImagePathConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Border BackgroundColor="#242424" StrokeThickness="2" StrokeShape="RoundRectangle 3" Stroke="Silver">
+        <VerticalStackLayout VerticalOptions="Center">
+            <VerticalStackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateCommand}"
+                                      CommandParameter="{Binding PageType}" />
+            </VerticalStackLayout.GestureRecognizers>
+            <Image Style="{StaticResource MenuButtonStyle}">
+                <Image.Source>
+                    <Binding Path="ImageSource">
+                        <Binding.Converter>
+                            <c:ImagePathConverter />
+                        </Binding.Converter>
+                        <Binding.ConverterParameter>
+                            <x:Int32>0</x:Int32>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                </Image.Source>
+            </Image>
+            <Label Text="{Binding LabelText}" Style="{StaticResource MenuTextStyle}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

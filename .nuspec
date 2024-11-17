@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Mtf.Maui.Controls</id>
+    <version>1.0.0</version>
+    <description>
+      The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
+
+      Compatibility:
+      - .net8.0
+    </description>
+    <authors>Mortens</authors>
+    <owners>Mortens</owners>
+    <copyright>Copyright © 2024</copyright>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Mortens4444/Mtf.Network</projectUrl>
+    <repository type="git" url="https://github.com/Mortens4444/Mtf.Network.git" branch="main" />
+    <tags>CheckBoxWithLabel EntryWithLabel Hyperlink MenuItemView NumericUpDownWithLabel Mortens</tags>
+    <readme>docs\ReadMe.md</readme>
+    <dependencies>
+      <group targetFramework="net8.0-android">
+        <dependency id="CommunityToolkit.Mvvm" version="8.3.2" />
+        <dependency id="Microsoft.Maui.Controls" version="9.0.10" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="9.0.10" />
+        <dependency id="Microsoft.NET.ILLink.Tasks" version="8.0.11" />
+      </group>
+      <group targetFramework="net8.0-ios">
+        <dependency id="CommunityToolkit.Mvvm" version="8.3.2" />
+        <dependency id="Microsoft.Maui.Controls" version="9.0.10" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="9.0.10" />
+        <dependency id="Microsoft.NET.ILLink.Tasks" version="8.0.11" />
+      </group>
+      <group targetFramework="net8.0-maccatalyst">
+        <dependency id="CommunityToolkit.Mvvm" version="8.3.2" />
+        <dependency id="Microsoft.Maui.Controls" version="9.0.10" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="9.0.10" />
+        <dependency id="Microsoft.NET.ILLink.Tasks" version="8.0.11" />
+      </group>net8.0-windows10.0.19041.0
+      <group targetFramework="net8.0-windows10.0.19041.0">
+        <dependency id="CommunityToolkit.Mvvm" version="8.3.2" />
+        <dependency id="Microsoft.Maui.Controls" version="9.0.10" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="9.0.10" />
+        <dependency id="Microsoft.NET.ILLink.Tasks" version="8.0.11" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".\Mtf.Network\bin\Release\netstandard2.0\**" target="lib\netstandard2.0" />
+    <file src=".\ReadMe.md" target="docs\" />
+  </files>
+</package>

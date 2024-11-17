@@ -1,0 +1,9 @@
+.vs/
+**/bin/
+**/obj/
+*.nupkg
+*.exe
+*.bak
+publish.bat
+nuget.config*
+*.zip
