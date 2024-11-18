@@ -4,6 +4,7 @@
 *.nupkg
 *.exe
 *.bak
+*.tmp
 publish.bat
 nuget.config*
 *.zip

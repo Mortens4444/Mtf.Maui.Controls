@@ -17,7 +17,7 @@ public class ImagePathConverter : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
 
-    public ImageSource GetImagePath(IList<string> relativePaths, int fileIndex = 0)
+    public static ImageSource GetImagePath(IList<string> relativePaths, int fileIndex = 0)
     {
         ArgumentNullException.ThrowIfNull(relativePaths);
 
