@@ -7,9 +7,9 @@ public class ShowErrorMessage : ValueChangedMessage<string>
 {
     public ShowErrorMessage(Exception exception)
 #if DEBUG
-        : base(exception.GetDetails())
+        : base(exception?.GetDetails() ?? throw new ArgumentNullException(nameof(exception)))
 #else
-        : base(exception.Message)
+        : base(exception?.Message ?? throw new ArgumentNullException(nameof(exception)))
 #endif
     { }
 

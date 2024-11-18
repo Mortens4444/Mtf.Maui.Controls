@@ -16,7 +16,9 @@ public static class NavigationService
         var page = parameter == null ?
             (Page)ActivatorUtilities.CreateInstance(serviceProvider, pageType) :
             (Page)ActivatorUtilities.CreateInstance(serviceProvider, pageType, [parameter]);
-        await Application.Current!.MainPage!.Navigation.PushAsync(page).ConfigureAwait(true);
+
+        await Application.Current!.Windows[0]!.Page!.Navigation.PushAsync(page).ConfigureAwait(true);
+        //await Application.Current!.MainPage!.Navigation.PushAsync(page).ConfigureAwait(true);
 
         return page;
     }

@@ -1,2 +1,2 @@
-nuget pack .nuspec
+dotnet pack --configuration Release 
 pause

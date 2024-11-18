@@ -2,9 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
-             xmlns:cc="clr-namespace:Mtf.Maui.Controls"
+             xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              x:Class="Mtf.Maui.Controls.MenuItemView"
-             x:DataType="cc:MenuItemView">
+             x:DataType="vm:MenuItemViewModel">
 
     <ContentView.Resources>
         <ResourceDictionary>

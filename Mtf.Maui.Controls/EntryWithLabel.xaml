@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              x:Class="Mtf.Maui.Controls.EntryWithLabel"
-             x:Name="Myself">
+             x:DataType="vm:EntryWithLabelViewModel">
 
-    <VerticalStackLayout BindingContext="{x:Reference Myself}">
+    <VerticalStackLayout>
         <Label x:Name="TextLabel"
                Text="{Binding Label}" IsVisible="{Binding IsLabelVisible}" />
 
@@ -12,8 +13,8 @@
                VerticalTextAlignment="Start"
                MinimumWidthRequest="{Binding EntryMinimumWidthRequest}"
                MinimumHeightRequest="{Binding EntryMinimumHeightRequest}"
-               HorizontalOptions="{Binding HorizontalOptions}"
-               VerticalOptions="{Binding VerticalOptions}"
+               HorizontalOptions="{Binding EntryHorizontalOptions}"
+               VerticalOptions="{Binding EntryVerticalOptions}"
                Placeholder="{Binding Placeholder}"
                Text="{Binding Text, Mode=TwoWay}"
                TextColor="{Binding EntryTextColor}"
@@ -24,7 +25,7 @@
             <Entry.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="2"
-                    Command="{Binding Source={x:Reference Myself}, Path=CopyToClipboardCommand}" />
+                    Command="{Binding CopyToClipboardCommand}" />
             </Entry.GestureRecognizers>
         </Entry>
     </VerticalStackLayout>
