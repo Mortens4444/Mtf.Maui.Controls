@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              x:Class="Mtf.Maui.Controls.NumericUpDownWithLabel"
-             x:Name="Myself"
-             x:DataType="vm:NumericUpDownWithLabelViewModel">
+             x:Name="Myself">
 
     <VerticalStackLayout BindingContext="{x:Reference Myself}">
 
@@ -18,7 +17,7 @@
                     WidthRequest="44" />
 
             <Entry x:Name="ValueLabel"
-                   Text="{Binding Value, Mode=TwoWay}"
+                   Text="{Binding Value}"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
                    Keyboard="Numeric"
@@ -34,4 +33,5 @@
                     WidthRequest="44" />
         </HorizontalStackLayout>
     </VerticalStackLayout>
+
 </ContentView>

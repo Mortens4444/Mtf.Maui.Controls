@@ -5,6 +5,10 @@
              x:Class="Mtf.Maui.Controls.EntryWithLabel"
              x:DataType="vm:EntryWithLabelViewModel">
 
+    <ContentView.BindingContext>
+        <vm:EntryWithLabelViewModel />
+    </ContentView.BindingContext>
+
     <VerticalStackLayout>
         <Label x:Name="TextLabel"
                Text="{Binding Label}" IsVisible="{Binding IsLabelVisible}" />

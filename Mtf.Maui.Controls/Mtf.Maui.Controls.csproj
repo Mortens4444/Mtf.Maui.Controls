@@ -28,7 +28,7 @@
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.9</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
@@ -40,8 +40,6 @@
       - net8.0-windows10.0.19041.0
     </Description>
     <Copyright>Copyright © 2024</Copyright>
-    <!--<PackageReadmeFile>$(SolutionDir)ReadMe.md</PackageReadmeFile>
-    <PackageLicenseFile>$(SolutionDir)LICENSE.txt</PackageLicenseFile>-->
     <PackageProjectUrl>https://github.com/Mortens4444/Mtf.Maui.Controls</PackageProjectUrl>
     <PackageRepositoryUrl>https://github.com/Mortens4444/Mtf.Maui.Controls.git</PackageRepositoryUrl>
     <PackageTags>MAUI Controls CheckBoxWithLabel EntryWithLabel Hyperlink MenuItemView NumericUpDownWithLabel Mortens</PackageTags>
@@ -51,25 +49,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Include the README.md file in the NuGet package -->
+    <MauiImage Include="Resources\Images\*" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Resources\Images\unknown.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="$(SolutionDir)ReadMe.md">
       <Pack>true</Pack>
       <PackagePath>docs/ReadMe.md</PackagePath>
-      <!-- Optional: Set the path inside the package -->
     </None>
 
-    <!-- Include the LICENSE.txt file in the NuGet package -->
     <None Include="$(SolutionDir)LICENSE.txt">
       <Pack>true</Pack>
       <PackagePath>docs/LICENSE.txt</PackagePath>
-      <!-- Optional: Set the path inside the package -->
     </None>
   </ItemGroup>
 
   <ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.100" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,6 +90,10 @@
 	  <MauiXaml Update="NumericUpDownWithLabel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\unknown.png" />
 	</ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mtf.Maui.Controls.Models;
 using Mtf.Maui.Controls.Services;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace Mtf.Maui.Controls.ViewModels;
@@ -10,9 +11,10 @@ namespace Mtf.Maui.Controls.ViewModels;
 public partial class MenuItemViewModel : ObservableObject
 {
     private bool isNavigating;
+    public const string Unknown = "unknown.scale-100";
 
     [ObservableProperty]
-    private List<string> imageSource = new() { "unknown" };
+    private List<string> imageSource = new() { Unknown };
 
     [ObservableProperty]
     private string labelText = String.Empty;
@@ -37,7 +39,8 @@ public partial class MenuItemViewModel : ObservableObject
                 return;
             }
             isNavigating = true;
-
+            Debug.WriteLine($"NavigateToPageAsync {PageType.Name}");
+            Debug.WriteLine($"NavigateToPageAsync {Parameter}");
             var page = await NavigationService.NavigateToPageAsync(PageType, Parameter).ConfigureAwait(false);
             page.Disappearing += OnDisappearing;
 

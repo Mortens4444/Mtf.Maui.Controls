@@ -4,10 +4,31 @@
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              x:Class="Mtf.Maui.Controls.MenuItemView"
-             x:DataType="vm:MenuItemViewModel">
+             x:DataType="vm:MenuItemViewModel"
+             Margin="10"
+             WidthRequest="80">
+
+    <ContentView.BindingContext>
+        <vm:MenuItemViewModel />
+    </ContentView.BindingContext>
 
     <ContentView.Resources>
         <ResourceDictionary>
+            <Style x:Key="ColoredTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style x:Key="MenuButtonStyle" TargetType="Image">
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="WidthRequest" Value="40" />
+                <Setter Property="Aspect" Value="AspectFit" />
+            </Style>
+            <Style x:Key="MenuTextStyle" TargetType="Label" BasedOn="{StaticResource ColoredTextStyle}">
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="Margin" Value="0, 1" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
             <c:ImagePathConverter x:Key="ImagePathConverter" />
         </ResourceDictionary>
     </ContentView.Resources>

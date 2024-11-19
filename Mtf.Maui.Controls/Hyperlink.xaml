@@ -5,6 +5,10 @@
              x:Class="Mtf.Maui.Controls.Hyperlink"
              x:DataType="vm:HyperlinkViewModel">
 
+    <ContentView.BindingContext>
+        <vm:HyperlinkViewModel />
+    </ContentView.BindingContext>
+
     <Label x:Name="HyperlinkLabel"
            Text="{Binding LinkLabel}"
            TextColor="LightBlue"

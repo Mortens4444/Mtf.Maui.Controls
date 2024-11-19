@@ -66,7 +66,11 @@ public partial class EntryWithLabelViewModel : ObservableObject
         }
     }
 
-    public event EventHandler<TextChangedEventArgs>? TextChanged;
-
-    public void OnTextChanged(object sender, TextChangedEventArgs e) => TextChanged?.Invoke(this, e);
+    partial void OnPlaceholderChanged(string value)
+    {
+        if (String.IsNullOrWhiteSpace(value))
+        {
+            Placeholder = Label;
+        }
+    }
 }

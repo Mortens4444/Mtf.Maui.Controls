@@ -6,7 +6,6 @@ namespace Mtf.Maui.Controls.Converters;
 public class ImagePathConverter : IValueConverter
 {
     private const string ImageExtension = ".png";
-    private const string RelativeDirectoryPath = "../../../../../Resources/Images";
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -28,7 +27,7 @@ public class ImagePathConverter : IValueConverter
         {
             if (ImageSettings.UseOfflineImages)
             {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RelativeDirectoryPath, filename);
+                return ImageSource.FromFile(filename);
             }
 
             var uri = String.Concat(ImageSettings.ImagesUrl, filename);
