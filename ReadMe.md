@@ -101,7 +101,7 @@ You can set up the `MenuItemView` to download images from an online source.
 ```csharp
 ImageSettings.UseOfflineImages = false;
 ImageSettings.ImagesUrl = "https://cdn.example.com/images/";
-ImageSettings.NumberOfDaysToCacheImages = 30; // Cache 30 napig
+ImageSettings.NumberOfDaysToCacheImages = 30; // Cache for 30 days
 ```
 
 ---

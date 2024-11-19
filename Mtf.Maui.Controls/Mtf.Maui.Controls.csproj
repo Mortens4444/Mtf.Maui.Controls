@@ -28,7 +28,7 @@
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
@@ -43,6 +43,8 @@
     <PackageProjectUrl>https://github.com/Mortens4444/Mtf.Maui.Controls</PackageProjectUrl>
     <PackageRepositoryUrl>https://github.com/Mortens4444/Mtf.Maui.Controls.git</PackageRepositoryUrl>
     <PackageTags>MAUI Controls CheckBoxWithLabel EntryWithLabel Hyperlink MenuItemView NumericUpDownWithLabel Mortens</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>docs/ReadMe.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <RepositoryBranch>main</RepositoryBranch>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
