@@ -2,14 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
-             xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
-             x:Class="Mtf.Maui.Controls.MenuItemView"
-             x:DataType="vm:MenuItemViewModel">
-
-    <ContentView.BindingContext>
-        <vm:MenuItemViewModel />
-    </ContentView.BindingContext>
-
+             xmlns:mc="clr-namespace:Mtf.Maui.Controls"
+             x:Class="Mtf.Maui.Controls.UriOpenerButtonWithLabelView"
+             x:DataType="mc:UriOpenerButtonWithLabelView">
     <ContentView.Resources>
         <ResourceDictionary>
             <c:ImagePathConverter x:Key="ImagePathConverter" />
@@ -17,10 +12,11 @@
     </ContentView.Resources>
 
     <Border BackgroundColor="#242424" StrokeThickness="2" StrokeShape="RoundRectangle 3" Stroke="Silver">
-        <VerticalStackLayout VerticalOptions="Center">
+        <VerticalStackLayout VerticalOptions="Center"
+                             WidthRequest="50">
             <VerticalStackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateCommand}"
-                                      CommandParameter="{Binding PageType}" />
+                <TapGestureRecognizer Command="{Binding OpenUriCommand}"
+                                      CommandParameter="{Binding UrlToOpen}" />
             </VerticalStackLayout.GestureRecognizers>
             <Image Style="{StaticResource MenuButtonStyle}">
                 <Image.Source>

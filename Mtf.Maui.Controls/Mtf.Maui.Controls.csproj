@@ -28,7 +28,7 @@
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>1.0.12</Version>
+    <Version>1.0.14</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
@@ -42,7 +42,7 @@
     <Copyright>Copyright © 2024</Copyright>
     <PackageProjectUrl>https://github.com/Mortens4444/Mtf.Maui.Controls</PackageProjectUrl>
     <PackageRepositoryUrl>https://github.com/Mortens4444/Mtf.Maui.Controls.git</PackageRepositoryUrl>
-    <PackageTags>MAUI Controls CheckBoxWithLabel EntryWithLabel Hyperlink MenuItemView NumericUpDownWithLabel Mortens</PackageTags>
+    <PackageTags>MAUI Controls CheckBoxWithLabel EntryWithLabel Hyperlink MenuItemView NumericUpDownWithLabel LabelWithTitle LabelWithToggleCommand Mortens</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>docs/ReadMe.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
@@ -86,10 +86,25 @@
 	  <MauiXaml Update="Hyperlink.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="LabelWithTitle.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="LabelWithToggleCommand.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="MenuItemView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="NumericUpDownWithLabel.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\LibraryStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ToggleButtonView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UriOpenerButtonWithLabelView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

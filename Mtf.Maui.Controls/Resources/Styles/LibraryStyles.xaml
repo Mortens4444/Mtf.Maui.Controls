@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="Mtf.Maui.Controls.Resources.Styles.LibraryStyles"
+                    xmlns:mc="clr-namespace:Mtf.Maui.Controls;assembly=Mtf.Maui.Controls">
+
+    <Style TargetType="mc:MenuItemView" x:Key="MenuItemViewStyle">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="WidthRequest" Value="80" />
+    </Style>
+
+    <Style x:Key="ColoredTextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="White" />
+    </Style>
+    
+    <Style x:Key="MenuButtonStyle" TargetType="Image">
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="Aspect" Value="AspectFit" />
+    </Style>
+    
+    <Style x:Key="MenuTextStyle" TargetType="Label" BasedOn="{StaticResource ColoredTextStyle}">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Margin" Value="0, 1" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+
+    <Style x:Key="SmallTextStyle" TargetType="Label" BasedOn="{StaticResource ColoredTextStyle}">
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style x:Key="MediumTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="19" />
+    </Style>
+    
+    <Style x:Key="DefaultTextStyle" TargetType="Label" BasedOn="{StaticResource SmallTextStyle}">
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+    
+    <Style x:Key="DefaultTitleStyle" TargetType="Label" BasedOn="{StaticResource MediumTextStyle}">
+        <Setter Property="TextColor" Value="BurlyWood" />
+        <Setter Property="Padding" Value="0,3" />
+    </Style>
+    
+    <Style x:Key="DefaultLabelStyle" TargetType="Label" BasedOn="{StaticResource DefaultTextStyle}">
+        <Setter Property="Margin" Value="10,0,0,0" />
+    </Style>
+
+</ResourceDictionary>

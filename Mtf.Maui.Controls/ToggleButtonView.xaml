@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="clr-namespace:Mtf.Maui.Controls"
+             xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
+             x:Class="Mtf.Maui.Controls.ToggleButtonView"
+             x:DataType="mc:ToggleButtonView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <c:ImagePathConverter x:Key="ImagePathConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Border BackgroundColor="#242424" StrokeThickness="2" StrokeShape="RoundRectangle 3" Stroke="Silver">
+        <VerticalStackLayout VerticalOptions="Center"
+                             WidthRequest="50">
+            <VerticalStackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ToggleVisibilityCommand}" />
+            </VerticalStackLayout.GestureRecognizers>
+            <Image Style="{StaticResource MenuButtonStyle}"
+                   Source="{Binding ImageName, Converter={c:ImagePathConverter}}" />
+            <Label Text="{Binding LabelText}"
+                   Style="{StaticResource MenuTextStyle}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
