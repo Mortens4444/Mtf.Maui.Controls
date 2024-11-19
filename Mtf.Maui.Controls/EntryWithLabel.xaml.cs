@@ -1,107 +1,48 @@
-using Mtf.Maui.Controls.Services;
-using Mtf.Maui.Controls.ViewModels;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Mtf.Maui.Controls.Models;
 
 namespace Mtf.Maui.Controls;
 
 public partial class EntryWithLabel : ContentView
 {
     public static readonly BindableProperty EntryTextColorProperty =
-        BindableProperty.Create(nameof(EntryTextColor), typeof(Color), typeof(EntryWithLabel), Colors.White,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, Color>
-                    (bindable, newValue as Color ?? Colors.White, (vm, value) => vm.EntryTextColor = value);
-            });
+        BindableProperty.Create(nameof(EntryTextColor), typeof(Color), typeof(EntryWithLabel), Colors.White);
 
     public static readonly BindableProperty EntryMinimumWidthRequestProperty =
-        BindableProperty.Create(nameof(EntryMinimumWidthRequest), typeof(int), typeof(EntryWithLabel), 50,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, int>
-                    (bindable, (int)newValue, (vm, value) => vm.EntryMinimumWidthRequest = value);
-            });
+        BindableProperty.Create(nameof(EntryMinimumWidthRequestProperty), typeof(int), typeof(EntryWithLabel), 50);
 
     public static readonly BindableProperty EntryMinimumHeightRequestProperty =
-        BindableProperty.Create(nameof(EntryMinimumHeightRequest), typeof(int), typeof(EntryWithLabel), 20,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, int>
-                    (bindable, (int)newValue, (vm, value) => vm.EntryMinimumHeightRequest = value);
-            });
+        BindableProperty.Create(nameof(EntryMinimumHeightRequest), typeof(int), typeof(EntryWithLabel), 20);
 
     public static readonly BindableProperty LabelProperty =
-        BindableProperty.Create(nameof(Label), typeof(string), typeof(EntryWithLabel), String.Empty,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, string>
-                    (bindable, newValue as string ?? String.Empty, (vm, value) => vm.Label = value);
-            });
+        BindableProperty.Create(nameof(Label), typeof(string), typeof(EntryWithLabel), String.Empty);
 
     public static readonly BindableProperty PlaceholderProperty =
-        BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(EntryWithLabel), String.Empty,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, string>
-                    (bindable, newValue as string ?? String.Empty, (vm, value) => vm.Placeholder = value);
-            });
+        BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(EntryWithLabel), String.Empty);
 
     public static readonly BindableProperty TextProperty =
-        BindableProperty.Create(nameof(Text), typeof(string), typeof(EntryWithLabel), String.Empty, BindingMode.TwoWay,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, string>
-                    (bindable, newValue as string ?? String.Empty, (vm, value) => vm.Text = value);
-            });
+        BindableProperty.Create(nameof(Text), typeof(string), typeof(EntryWithLabel), String.Empty, BindingMode.TwoWay);
 
     public static readonly BindableProperty KeyboardProperty =
-        BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(EntryWithLabel), Keyboard.Default,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, Keyboard>
-                    (bindable, newValue as Keyboard ?? Keyboard.Default, (vm, value) => vm.Keyboard = value);
-            });
+        BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(EntryWithLabel), Keyboard.Default);
 
     public static readonly BindableProperty IsPasswordProperty =
-        BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(EntryWithLabel), false,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, bool>
-                    (bindable, (bool)newValue, (vm, value) => vm.IsPassword = value);
-            });
+        BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(EntryWithLabel), false);
 
     public static readonly BindableProperty IsReadOnlyProperty =
-        BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(EntryWithLabel), false,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, bool>
-                    (bindable, (bool)newValue, (vm, value) => vm.IsReadOnly = value);
-            });
+        BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(EntryWithLabel), false);
 
     public static readonly BindableProperty IsLabelVisibleProperty =
-        BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(EntryWithLabel), true,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, bool>
-                    (bindable, (bool)newValue, (vm, value) => vm.IsLabelVisible = value);
-            });
+        BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(EntryWithLabel), true);
 
     public static readonly BindableProperty EntryHorizontalOptionsProperty =
-        BindableProperty.Create(nameof(EntryHorizontalOptions), typeof(LayoutOptions), typeof(EntryWithLabel), LayoutOptions.Start,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, LayoutOptions>
-                    (bindable, (LayoutOptions)newValue, (vm, value) => vm.EntryHorizontalOptions = value);
-            });
+        BindableProperty.Create(nameof(EntryHorizontalOptions), typeof(LayoutOptions), typeof(EntryWithLabel), LayoutOptions.Start);
 
     public static readonly BindableProperty EntryVerticalOptionsProperty =
-        BindableProperty.Create(nameof(EntryVerticalOptions), typeof(LayoutOptions), typeof(EntryWithLabel), LayoutOptions.Start,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                PropertyChanger.OnPropertyChanged<EntryWithLabel, EntryWithLabelViewModel, LayoutOptions>
-                    (bindable, (LayoutOptions)newValue, (vm, value) => vm.EntryVerticalOptions = value);
-            });
+        BindableProperty.Create(nameof(EntryVerticalOptions), typeof(LayoutOptions), typeof(EntryWithLabel), LayoutOptions.Start);
 
-    public EntryWithLabel() => InitializeComponent();
+    public event EventHandler<TextChangedEventArgs>? TextChanged;
 
     public Color EntryTextColor
     {
@@ -129,7 +70,11 @@ public partial class EntryWithLabel : ContentView
 
     public string Placeholder
     {
-        get => (string)GetValue(PlaceholderProperty);
+        get
+        {
+            var result = (string)GetValue(PlaceholderProperty);
+            return String.IsNullOrWhiteSpace(result) ? Label : result;
+        }
         set => SetValue(PlaceholderProperty, value);
     }
 
@@ -175,7 +120,17 @@ public partial class EntryWithLabel : ContentView
         set => SetValue(EntryVerticalOptionsProperty, value);
     }
 
-    public event EventHandler<TextChangedEventArgs>? TextChanged;
+    public EntryWithLabel() => InitializeComponent();
 
-    private void OnTextChanged(object sender, TextChangedEventArgs e) => TextChanged?.Invoke(this, e);
+    [RelayCommand]
+    private static async Task CopyToClipboard(string text)
+    {
+        if (!String.IsNullOrWhiteSpace(text))
+        {
+            await Clipboard.SetTextAsync(text).ConfigureAwait(false);
+            _ = WeakReferenceMessenger.Default.Send(new ShowInfoMessage("Success", "Text copied to clipboard."));
+        }
+    }
+
+    protected virtual void OnTextChanged(object sender, TextChangedEventArgs e) => TextChanged?.Invoke(this, e);
 }

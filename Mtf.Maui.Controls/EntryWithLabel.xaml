@@ -3,33 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              x:Class="Mtf.Maui.Controls.EntryWithLabel"
-             x:DataType="vm:EntryWithLabelViewModel">
-
-    <ContentView.BindingContext>
-        <vm:EntryWithLabelViewModel />
-    </ContentView.BindingContext>
-
-    <VerticalStackLayout>
+             x:Name="Myself">
+    
+    <VerticalStackLayout BindingContext="{x:Reference Myself}">
         <Label x:Name="TextLabel"
-               Text="{Binding Label}" IsVisible="{Binding IsLabelVisible}" />
+                   Text="{Binding Label}" IsVisible="{Binding IsLabelVisible}" />
 
         <Entry x:Name="ValueEntry"
-               VerticalTextAlignment="Start"
-               MinimumWidthRequest="{Binding EntryMinimumWidthRequest}"
-               MinimumHeightRequest="{Binding EntryMinimumHeightRequest}"
-               HorizontalOptions="{Binding EntryHorizontalOptions}"
-               VerticalOptions="{Binding EntryVerticalOptions}"
-               Placeholder="{Binding Placeholder}"
-               Text="{Binding Text, Mode=TwoWay}"
-               TextColor="{Binding EntryTextColor}"
-               Keyboard="{Binding Keyboard}"
-               IsPassword="{Binding IsPassword}"
-               IsReadOnly="{Binding IsReadOnly, Mode=TwoWay}"
-               TextChanged="OnTextChanged">
+                   VerticalTextAlignment="Start"
+                   MinimumWidthRequest="{Binding EntryMinimumWidthRequest}"
+                   MinimumHeightRequest="{Binding EntryMinimumHeightRequest}"
+                   HorizontalOptions="{Binding HorizontalOptions}"
+                   VerticalOptions="{Binding VerticalOptions}"
+                   Placeholder="{Binding Placeholder}"
+                   Text="{Binding Text, Mode=TwoWay}"
+                   TextColor="{Binding EntryTextColor}"
+                   Keyboard="{Binding Keyboard}"
+                   IsPassword="{Binding IsPassword}"
+                   IsReadOnly="{Binding IsReadOnly, Mode=TwoWay}"
+                   TextChanged="OnTextChanged">
             <Entry.GestureRecognizers>
-                <TapGestureRecognizer
-                    NumberOfTapsRequired="2"
-                    Command="{Binding CopyToClipboardCommand}" />
+                <TapGestureRecognizer NumberOfTapsRequired="2"
+                    Command="{Binding Source={x:Reference Myself}, Path=CopyToClipboardCommand}" />
             </Entry.GestureRecognizers>
         </Entry>
     </VerticalStackLayout>

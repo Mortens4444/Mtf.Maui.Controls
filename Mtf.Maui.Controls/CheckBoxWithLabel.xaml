@@ -3,23 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              x:Class="Mtf.Maui.Controls.CheckBoxWithLabel"
-             x:Name="Myself"
-             x:DataType="vm:CheckBoxWithLabelViewModel">
-
-    <ContentView.BindingContext>
-        <vm:CheckBoxWithLabelViewModel />
-    </ContentView.BindingContext>
+             x:Name="Myself">
 
     <HorizontalStackLayout BindingContext="{x:Reference Myself}">
         <CheckBox x:Name="checkBox"
-                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                  IsEnabled="{Binding IsEnabled}" />
+                IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                IsEnabled="{Binding IsEnabled}" />
 
         <Label Text="{Binding Label}"
             TextColor="White"
             GestureRecognizers="{TapGestureRecognizer Command={Binding ToggleCommand}}"
-            VerticalOptions="Center" />
-
+            VerticalOptions="Center"/>
     </HorizontalStackLayout>
 
 </ContentView>
