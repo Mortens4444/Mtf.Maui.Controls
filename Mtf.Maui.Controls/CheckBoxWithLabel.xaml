@@ -2,16 +2,25 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
+             xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
              x:Class="Mtf.Maui.Controls.CheckBoxWithLabel"
              x:Name="Myself">
 
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:LibraryStyles />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
     <HorizontalStackLayout BindingContext="{x:Reference Myself}">
         <CheckBox x:Name="checkBox"
                 IsChecked="{Binding IsChecked, Mode=TwoWay}"
                 IsEnabled="{Binding IsEnabled}" />
 
         <Label Text="{Binding Label}"
-            TextColor="White"
+            TextColor="{Binding TextColor}"
             GestureRecognizers="{TapGestureRecognizer Command={Binding ToggleCommand}}"
             VerticalOptions="Center"/>
     </HorizontalStackLayout>

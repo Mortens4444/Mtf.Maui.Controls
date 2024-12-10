@@ -9,13 +9,13 @@
         <VerticalStackLayout>
 
             <HorizontalStackLayout>
-                <mc:MenuItemView ImageName="unknown" LabelText="MainPage" PageType="{x:Type v:MainPage}" />
+                <mc:MenuItemView ImageName="unknown" LabelText="MainPage" PageType="{x:Type v:MainPage}" HorizontalOptions="Center" />
                 <mc:MenuItemView ImageName="dotnet_bot" LabelText="MainPage" PageType="{x:Type v:MainPage}" />
             </HorizontalStackLayout>
 
             <mc:Hyperlink LinkLabel="Privacy Policy" Url="https://samu.us/mortens/H4ckW1thM3/privacypolicy.txt" HorizontalOptions="Center" />
 
-            <mc:CheckBoxWithLabel IsChecked="True" Label="Encode Whitespaces" />
+            <mc:CheckBoxWithLabel IsChecked="True" Label="Encode Whitespaces" TextColor="Red" />
             
             <mc:NumericUpDownWithLabel x:Name="BitBlockSize"
                                        Label="Block Size (in bits)"
@@ -27,10 +27,22 @@
                                        Margin="10" />
             
             <mc:EntryWithLabel x:Name="IV"
-                                   Label="Initialization Vector (IV) (Hexadecimal)"
-                                   Placeholder="Enter IV in hexadecimal format"
-                                   Text=""
-                                   Grid.Column="1" />
+                               Label="Initialization Vector (IV) (Hexadecimal)"
+                               Placeholder="Enter IV in hexadecimal format"
+                               Text=""
+                               Grid.Column="1" />
+
+            <mc:LabelWithTitle Title="Hello" Text="World!" />
+
+            <mc:LabelWithToggleCommand Text="- Általános információk"
+                                       Command="{Binding Path=ToggleTextCommand}"
+                                       CommandParameter="{Binding Source={RelativeSource Self}}" />
+
+            <mc:UriOpenerButtonWithLabelView LabelText="HackWithMe"
+                                             UrlToOpen="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"
+                                             WidthRequest="150"
+                                             TextColor="AliceBlue" />
+
 
         </VerticalStackLayout>
     </ScrollView>

@@ -17,6 +17,12 @@ public partial class MenuItemViewModel : ObservableObject
     private List<string> imageSource = new() { Unknown };
 
     [ObservableProperty]
+    private Color textColor = Colors.White;
+
+    [ObservableProperty]
+    private LayoutOptions labelHorizontalOptions = LayoutOptions.Center;
+
+    [ObservableProperty]
     private string labelText = String.Empty;
 
     [ObservableProperty]

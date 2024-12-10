@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
+             xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
              x:Class="Mtf.Maui.Controls.MenuItemView"
              x:DataType="vm:MenuItemViewModel">
 
@@ -12,6 +13,9 @@
 
     <ContentView.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:LibraryStyles />
+            </ResourceDictionary.MergedDictionaries>
             <c:ImagePathConverter x:Key="ImagePathConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
@@ -34,7 +38,7 @@
                     </Binding>
                 </Image.Source>
             </Image>
-            <Label Text="{Binding LabelText}" Style="{StaticResource MenuTextStyle}" />
+            <Label Text="{Binding LabelText}" Style="{StaticResource MenuTextStyle}" TextColor="{Binding TextColor}" HorizontalOptions="{Binding LabelHorizontalOptions}" />
         </VerticalStackLayout>
     </Border>
 </ContentView>

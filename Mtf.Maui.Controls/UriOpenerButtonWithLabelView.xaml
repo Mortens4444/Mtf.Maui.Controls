@@ -3,17 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
              xmlns:mc="clr-namespace:Mtf.Maui.Controls"
+             xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
              x:Class="Mtf.Maui.Controls.UriOpenerButtonWithLabelView"
              x:DataType="mc:UriOpenerButtonWithLabelView">
+    
     <ContentView.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:LibraryStyles />
+            </ResourceDictionary.MergedDictionaries>
             <c:ImagePathConverter x:Key="ImagePathConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
 
     <Border BackgroundColor="#242424" StrokeThickness="2" StrokeShape="RoundRectangle 3" Stroke="Silver">
-        <VerticalStackLayout VerticalOptions="Center"
-                             WidthRequest="50">
+        <VerticalStackLayout VerticalOptions="Center">
             <VerticalStackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding OpenUriCommand}"
                                       CommandParameter="{Binding UrlToOpen}" />
@@ -30,7 +34,7 @@
                     </Binding>
                 </Image.Source>
             </Image>
-            <Label Text="{Binding LabelText}" Style="{StaticResource MenuTextStyle}" />
+            <Label Text="{Binding LabelText}" Style="{StaticResource MenuTextStyle}" TextColor="{Binding TextColor}" HorizontalOptions="{Binding LabelHorizontalOptions}" />
         </VerticalStackLayout>
     </Border>
 </ContentView>

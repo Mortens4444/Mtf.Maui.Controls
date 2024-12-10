@@ -2,8 +2,17 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
+             xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
              x:Class="Mtf.Maui.Controls.Hyperlink"
              x:DataType="vm:HyperlinkViewModel">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:LibraryStyles />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentView.Resources>
 
     <ContentView.BindingContext>
         <vm:HyperlinkViewModel />

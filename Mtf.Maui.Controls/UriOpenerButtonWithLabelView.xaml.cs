@@ -1,3 +1,4 @@
+using Microsoft.Maui.Graphics.Text;
 using Mtf.Maui.Controls.Services;
 using System.Windows.Input;
 
@@ -14,10 +15,28 @@ public partial class UriOpenerButtonWithLabelView : ContentView
     public static readonly BindableProperty UrlToOpenProperty =
         BindableProperty.Create(nameof(UrlToOpen), typeof(string), typeof(UriOpenerButtonWithLabelView), String.Empty);
 
+    public static readonly BindableProperty TextColorProperty =
+        BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(CheckBoxWithLabel), Colors.White);
+
+    public static readonly BindableProperty LabelHorizontalOptionsProperty =
+        BindableProperty.Create(nameof(LabelHorizontalOptions), typeof(LayoutOptions), typeof(CheckBoxWithLabel), LayoutOptions.Center);
+
     public UriOpenerButtonWithLabelView()
     {
         InitializeComponent();
         BindingContext = this;
+    }
+
+    public Color TextColor
+    {
+        get => (Color)GetValue(TextColorProperty);
+        set => SetValue(TextColorProperty, value);
+    }
+
+    public LayoutOptions LabelHorizontalOptions
+    {
+        get => (LayoutOptions)GetValue(LabelHorizontalOptionsProperty);
+        set => SetValue(LabelHorizontalOptionsProperty, value);
     }
 
     public string ImageName
