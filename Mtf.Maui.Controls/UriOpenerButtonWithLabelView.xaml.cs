@@ -1,4 +1,3 @@
-using Microsoft.Maui.Graphics.Text;
 using Mtf.Maui.Controls.Services;
 using System.Windows.Input;
 

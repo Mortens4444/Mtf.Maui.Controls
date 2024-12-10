@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mtf.Maui.Controls.Models;
 using Mtf.Maui.Controls.Services;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace Mtf.Maui.Controls.ViewModels;
@@ -45,16 +44,18 @@ public partial class MenuItemViewModel : ObservableObject
                 return;
             }
             isNavigating = true;
-            Debug.WriteLine($"NavigateToPageAsync {PageType.Name}");
-            Debug.WriteLine($"NavigateToPageAsync {Parameter}");
-            var page = await NavigationService.NavigateToPageAsync(PageType, Parameter).ConfigureAwait(false);
-            page.Disappearing += OnDisappearing;
 
-            void OnDisappearing(object? sender, EventArgs e)
+            var page = await NavigationService.NavigateToPageAsync(PageType, Parameter).ConfigureAwait(false);
+
+            EventHandler? disappearingHandler = null;
+
+            disappearingHandler = (sender, e) =>
             {
-                page.Disappearing -= OnDisappearing;
+                page.Disappearing -= disappearingHandler;
                 AfterExecution?.Execute(null);
-            }
+            };
+
+            page.Disappearing += disappearingHandler;
         }
         catch (Exception ex)
         {

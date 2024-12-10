@@ -49,7 +49,10 @@ public partial class ToggleButtonView : ContentView
                         visualElement.IsVisible = false;
                     }
                 }
-                VisualElement.IsVisible = true;
+                if (VisualElement != null)
+                {
+                    VisualElement.IsVisible = true;
+                }
             });
         BindingContext = this;
     }
