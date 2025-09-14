@@ -6,6 +6,9 @@ namespace Mtf.Maui.Controls;
 
 public partial class EntryWithLabel : ContentView
 {
+    public static readonly BindableProperty LabelTextColorProperty =
+        BindableProperty.Create(nameof(LabelTextColor), typeof(Color), typeof(EntryWithLabel), Colors.White);
+ 
     public static readonly BindableProperty EntryTextColorProperty =
         BindableProperty.Create(nameof(EntryTextColor), typeof(Color), typeof(EntryWithLabel), Colors.White);
 
@@ -43,6 +46,12 @@ public partial class EntryWithLabel : ContentView
         BindableProperty.Create(nameof(EntryVerticalOptions), typeof(LayoutOptions), typeof(EntryWithLabel), LayoutOptions.Start);
 
     public event EventHandler<TextChangedEventArgs>? TextChanged;
+    
+    public Color LabelTextColor
+    {
+        get => (Color)GetValue(LabelTextColorProperty);
+        set => SetValue(LabelTextColorProperty, value);
+    }
 
     public Color EntryTextColor
     {
