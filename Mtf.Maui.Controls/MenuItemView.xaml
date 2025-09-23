@@ -5,7 +5,10 @@
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
              x:Class="Mtf.Maui.Controls.MenuItemView"
-             x:DataType="vm:MenuItemViewModel">
+             x:DataType="vm:MenuItemViewModel"
+             WidthRequest="{Binding Source={x:Reference Root}, Path=WidthRequest}"
+             HeightRequest="{Binding Source={x:Reference Root}, Path=HeightRequest}"
+             x:Name="Root">
 
     <ContentView.BindingContext>
         <vm:MenuItemViewModel />
@@ -20,25 +23,38 @@
         </ResourceDictionary>
     </ContentView.Resources>
 
-    <Border BackgroundColor="#242424" StrokeThickness="2" StrokeShape="RoundRectangle 3" Stroke="Silver">
-        <VerticalStackLayout VerticalOptions="Center">
-            <VerticalStackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateCommand}"
-                                      CommandParameter="{Binding PageType}" />
-            </VerticalStackLayout.GestureRecognizers>
-            <Image Style="{StaticResource MenuButtonStyle}">
+    <Border BackgroundColor="#242424"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 3"
+            Stroke="Silver"
+            Padding="4">
+
+        <Grid RowDefinitions="*,Auto">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="{Binding PageType}" />
+            </Grid.GestureRecognizers>
+            
+            <Image Aspect="Fill"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Grid.Row="0">
                 <Image.Source>
-                    <Binding Path="ImageSource">
-                        <Binding.Converter>
-                            <c:ImagePathConverter />
-                        </Binding.Converter>
+                    <Binding Path="ImageSource" Converter="{StaticResource ImagePathConverter}">
                         <Binding.ConverterParameter>
                             <x:Int32>0</x:Int32>
                         </Binding.ConverterParameter>
                     </Binding>
                 </Image.Source>
             </Image>
-            <Label Text="{Binding LabelText}" Style="{StaticResource MenuTextStyle}" TextColor="{Binding TextColor}" HorizontalOptions="{Binding LabelHorizontalOptions}" />
-        </VerticalStackLayout>
+            
+            <Label Text="{Binding LabelText}"
+                   Style="{StaticResource MenuTextStyle}"
+                   TextColor="{Binding TextColor}"
+                   HorizontalOptions="{Binding LabelHorizontalOptions}"
+                   VerticalOptions="End"
+                   MaxLines="2"
+                   Grid.Row="1" />
+        </Grid>
     </Border>
+
 </ContentView>

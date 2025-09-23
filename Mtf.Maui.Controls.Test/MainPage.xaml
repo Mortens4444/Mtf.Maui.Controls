@@ -2,15 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="clr-namespace:Mtf.Maui.Controls;assembly=Mtf.Maui.Controls"
+             xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels;assembly=Mtf.Maui.Controls"
              xmlns:v="clr-namespace:Mtf.Maui.Controls.Test"
-             x:Class="Mtf.Maui.Controls.Test.MainPage">
+             x:Class="Mtf.Maui.Controls.Test.MainPage"
+             x:DataType="vm:MenuItemViewModel"
+             x:Name="Root">
 
     <ScrollView>
         <VerticalStackLayout>
 
             <HorizontalStackLayout>
-                <mc:MenuItemView ImageName="unknown" LabelText="MainPage" PageType="{x:Type v:MainPage}" HorizontalOptions="Center" />
-                <mc:MenuItemView ImageName="dotnet_bot" LabelText="MainPage" PageType="{x:Type v:MainPage}" />
+                <mc:MenuItemView ImageName="unknown" LabelText="MainPage" PageType="{x:Type v:MainPage}" HorizontalOptions="Center" WidthRequest="200" HeightRequest="200" />
+                <mc:MenuItemView ImageName="dotnet_bot" LabelText="MainPage" PageType="{x:Type v:MainPage}" WidthRequest="200" HeightRequest="200" />
             </HorizontalStackLayout>
 
             <mc:Hyperlink LinkLabel="Privacy Policy" Url="https://samu.us/mortens/H4ckW1thM3/privacypolicy.txt" HorizontalOptions="Center" />
@@ -35,8 +38,10 @@
             <mc:LabelWithTitle Title="Hello" Text="World!" />
 
             <mc:LabelWithToggleCommand Text="- Általános információk"
-                                       Command="{Binding Path=ToggleTextCommand}"
+                                       Command="{Binding ToggleTextCommand, Source={x:Reference Root}}"
                                        CommandParameter="{Binding Source={RelativeSource Self}}" />
+                                       <!--Command="{Binding Path=ToggleTextCommand}"
+                                       CommandParameter="{Binding Source={RelativeSource Self}}" />-->
 
             <mc:UriOpenerButtonWithLabelView LabelText="HackWithMe"
                                              UrlToOpen="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"

@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -23,21 +23,22 @@
 		<AnalysisLevel>latest-all</AnalysisLevel>
 		<Company>Mortens</Company>
 		<Authors>Mortens</Authors>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>1.0.27</Version>
+    <Version>1.0.28</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
 
       Compatibility:
-      - net8.0-android
-      - net8.0-ios
-      - net8.0-maccatalyst
-      - net8.0-windows10.0.19041.0
+      - net9.0-android
+      - net9.0-ios
+      - net9.0-maccatalyst
+      - net9.0-windows10.0.19041.0
     </Description>
     <Copyright>Copyright © 2024</Copyright>
     <PackageProjectUrl>https://github.com/Mortens4444/Mtf.Maui.Controls</PackageProjectUrl>
@@ -71,7 +72,7 @@
 
   <ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -109,6 +110,10 @@
 
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\unknown.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="9.0.110" />
 	</ItemGroup>
 
 </Project>

@@ -17,6 +17,8 @@
     <VerticalStackLayout BindingContext="{x:Reference Myself}">
         <Label x:Name="TextLabel"
                Text="{Binding Label}"
+               HorizontalOptions="{Binding HorizontalOptions}"
+               VerticalOptions="{Binding VerticalOptions}"
                TextColor="{Binding LabelTextColor}"
                IsVisible="{Binding IsLabelVisible}" />
 
