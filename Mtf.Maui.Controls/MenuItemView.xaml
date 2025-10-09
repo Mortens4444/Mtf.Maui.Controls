@@ -31,7 +31,8 @@
 
         <Grid RowDefinitions="*,Auto">
             <Grid.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="{Binding PageType}" />
+                <TapGestureRecognizer Command="{Binding NavigateCommand}"
+                                      CommandParameter="{Binding}" />
             </Grid.GestureRecognizers>
             
             <Image Aspect="Fill"
