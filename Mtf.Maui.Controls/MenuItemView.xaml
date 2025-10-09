@@ -10,10 +10,6 @@
              HeightRequest="{Binding Source={x:Reference Root}, Path=HeightRequest}"
              x:Name="Root">
 
-    <ContentView.BindingContext>
-        <vm:MenuItemViewModel />
-    </ContentView.BindingContext>
-
     <ContentView.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -29,7 +25,7 @@
             Stroke="Silver"
             Padding="4">
 
-        <Grid RowDefinitions="*,Auto">
+        <Grid x:Name="InnerRoot" RowDefinitions="*,Auto">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding NavigateCommand}"
                                       CommandParameter="{Binding}" />
