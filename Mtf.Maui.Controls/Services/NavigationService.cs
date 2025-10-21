@@ -6,18 +6,18 @@ public static class NavigationService
 {
     public static async Task<Page> NavigateToPageAsync(Type pageType, object? parameter = null)
     {
-        var serviceProvider = Application.Current?.Handler?.MauiContext?.Services
+        var serviceProvider = Shell.Current?.Handler?.MauiContext?.Services
                               ?? throw new InvalidOperationException("Service provider is not available.");
 
         var page = parameter == null ?
             (Page)ActivatorUtilities.CreateInstance(serviceProvider, pageType) :
             (Page)ActivatorUtilities.CreateInstance(serviceProvider, pageType, [parameter]);
-        await Application.Current.Dispatcher.DispatchAsync(async () =>
+        await Shell.Current.Dispatcher.DispatchAsync(async () =>
         {
             try
             {
                 //await Application.Current!.MainPage!.Navigation.PushAsync(page).ConfigureAwait(true);
-                await Application.Current.Windows[0].Page.Navigation.PushAsync(page).ConfigureAwait(true);
+                await Shell.Current.Navigation.PushAsync(page).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

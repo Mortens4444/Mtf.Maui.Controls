@@ -29,7 +29,7 @@
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>1.0.30</Version>
+    <Version>1.0.31</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
