@@ -2,12 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="clr-namespace:Mtf.Maui.Controls;assembly=Mtf.Maui.Controls"
-             xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels;assembly=Mtf.Maui.Controls"
+             xmlns:vm="clr-namespace:Mtf.Maui.Controls.Test.ViewModels"
              xmlns:v="clr-namespace:Mtf.Maui.Controls.Test"
              x:Class="Mtf.Maui.Controls.Test.MainPage"
-             x:DataType="vm:MenuItemViewModel"
+             x:DataType="vm:MainViewModel"
              x:Name="Root">
-
+    
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+    
     <ScrollView>
         <VerticalStackLayout>
 
@@ -16,7 +20,7 @@
                 <mc:MenuItemView ImageName="dotnet_bot" LabelText="MainPage" PageType="{x:Type v:MainPage}" WidthRequest="200" HeightRequest="200" />
             </HorizontalStackLayout>
 
-            <mc:Hyperlink LinkLabel="Privacy Policy" Url="https://samu.us/mortens/H4ckW1thM3/privacypolicy.txt" HorizontalOptions="Center" />
+            <mc:Hyperlink LinkLabel="Privacy Policy" Url="https://samu.us/mortens/HPrivacyPolicy.txt" HorizontalOptions="Center" />
 
             <mc:CheckBoxWithLabel IsChecked="True" Label="Encode Whitespaces" TextColor="Red" />
             
@@ -38,10 +42,10 @@
             <mc:LabelWithTitle Title="Hello" Text="World!" />
 
             <mc:LabelWithToggleCommand Text="- Általános információk"
-                                       Command="{Binding ToggleTextCommand, Source={x:Reference Root}}"
+                                       Command="{Binding Path=ToggleTextCommand}"
                                        CommandParameter="{Binding Source={RelativeSource Self}}" />
-                                       <!--Command="{Binding Path=ToggleTextCommand}"
-                                       CommandParameter="{Binding Source={RelativeSource Self}}" />-->
+                                       <!--Command="{Binding ToggleTextCommand, Source={x:Reference Root}}"
+                                       CommandParameter="{Binding Source={RelativeSource Self}}"-->
 
             <mc:UriOpenerButtonWithLabelView LabelText="HackWithMe"
                                              UrlToOpen="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"
