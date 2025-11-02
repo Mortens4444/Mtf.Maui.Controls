@@ -5,8 +5,7 @@
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.Test.ViewModels"
              xmlns:v="clr-namespace:Mtf.Maui.Controls.Test"
              x:Class="Mtf.Maui.Controls.Test.MainPage"
-             x:DataType="vm:MainViewModel"
-             x:Name="Root">
+             x:DataType="vm:MainViewModel">
     
     <ContentPage.BindingContext>
         <vm:MainViewModel />
@@ -42,10 +41,7 @@
             <mc:LabelWithTitle Title="Hello" Text="World!" />
 
             <mc:LabelWithToggleCommand Text="- Általános információk"
-                                       Command="{Binding Path=ToggleTextCommand}"
-                                       CommandParameter="{Binding Source={RelativeSource Self}}" />
-                                       <!--Command="{Binding ToggleTextCommand, Source={x:Reference Root}}"
-                                       CommandParameter="{Binding Source={RelativeSource Self}}"-->
+                                       Command="{Binding Path=ToggleTextCommand}" />
 
             <mc:UriOpenerButtonWithLabelView LabelText="HackWithMe"
                                              UrlToOpen="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"

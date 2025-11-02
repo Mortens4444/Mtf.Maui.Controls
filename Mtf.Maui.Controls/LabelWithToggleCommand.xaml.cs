@@ -28,7 +28,7 @@ public partial class LabelWithToggleCommand : ContentView, IHaveText
 
     public object CommandParameter
     {
-        get => GetValue(CommandParameterProperty);
+        get => GetValue(CommandParameterProperty) ?? this;
         set => SetValue(CommandParameterProperty, value);
     }
 
