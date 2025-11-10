@@ -27,7 +27,10 @@ public partial class Hyperlink : ContentView
 
         GestureRecognizers.Add(new TapGestureRecognizer
         {
-            Command = new Command(() => Hyperlink_RequestNavigate(this, Url))
+            Command = new Command(() =>
+            {
+                Task.Run(async () => await Hyperlink_RequestNavigate(this, Url).ConfigureAwait(false));
+            })
         });
         GestureRecognizers.Add(new PointerGestureRecognizer
         {
@@ -52,7 +55,7 @@ public partial class Hyperlink : ContentView
 
     private void OnPointerExited() => HyperlinkLabel.TextColor = Colors.LightBlue;
 
-    private static async void Hyperlink_RequestNavigate(object _, string uri)
+    private static async Task Hyperlink_RequestNavigate(object _, string uri)
     {
         if (Uri.TryCreate(uri, UriKind.Absolute, out var uriResult))
         {

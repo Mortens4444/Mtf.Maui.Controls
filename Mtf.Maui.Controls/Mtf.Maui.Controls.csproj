@@ -29,7 +29,7 @@
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>1.0.34</Version>
+    <Version>1.0.35</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
@@ -83,6 +83,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Hyperlink.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ImageLink.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="LabelWithTitle.xaml">

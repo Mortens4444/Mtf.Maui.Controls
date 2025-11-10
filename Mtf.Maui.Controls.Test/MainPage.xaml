@@ -48,6 +48,9 @@
                                              WidthRequest="150"
                                              TextColor="AliceBlue" />
 
+            <mc:ImageLink Url ="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"
+                          HeightRequest="25"
+                          WidthRequest="25" />
 
         </VerticalStackLayout>
     </ScrollView>

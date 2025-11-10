@@ -1,4 +1,3 @@
-using Mtf.Maui.Controls.Services;
 using Mtf.Maui.Controls.ViewModels;
 using System.Windows.Input;
 
@@ -6,10 +5,10 @@ namespace Mtf.Maui.Controls;
 
 public partial class MenuItemView : ContentView
 {
-    private readonly MenuItemViewModel viewModel = new MenuItemViewModel();
+    private readonly MenuItemViewModel viewModel = new();
 
     public static readonly BindableProperty ParameterProperty =
-        BindableProperty.Create(nameof(Parameter), typeof(object), typeof(MenuItemView), default(object),
+        BindableProperty.Create(nameof(Parameter), typeof(object), typeof(MenuItemView), default,
             propertyChanged: (bindable, oldValue, newValue) =>
             {
                 var view = (MenuItemView)bindable;
