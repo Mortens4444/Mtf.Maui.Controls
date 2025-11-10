@@ -58,5 +58,5 @@ public partial class UriOpenerButtonWithLabelView : ContentView
 
     public List<string> ImageSource => [ImageName];
 
-    public ICommand OpenUriCommand => new Command<string>(UriOpener.OpenUri);
+    public ICommand OpenUriCommand => new Command<string>((uri => _ = UriOpener.OpenUriAsync(uri)));
 }
