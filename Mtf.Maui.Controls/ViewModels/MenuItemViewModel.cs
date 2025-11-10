@@ -26,6 +26,7 @@ public partial class MenuItemViewModel : ObservableObject
         get => imageSource;
         set => SetProperty(ref imageSource, value);
     }
+
     public Color TextColor
     {
         get => textColor;

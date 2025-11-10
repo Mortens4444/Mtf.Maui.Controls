@@ -4,8 +4,8 @@
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
              xmlns:mc="clr-namespace:Mtf.Maui.Controls"
              xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
-             x:Class="Mtf.Maui.Controls.UriOpenerButtonWithLabelView"
-             x:DataType="mc:UriOpenerButtonWithLabelView">
+             x:Class="Mtf.Maui.Controls.UriOpenerButtonWithLabel"
+             x:DataType="mc:UriOpenerButtonWithLabel">
     
     <ContentView.Resources>
         <ResourceDictionary>

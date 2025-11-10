@@ -2,16 +2,16 @@ using System.Windows.Input;
 
 namespace Mtf.Maui.Controls;
 
-public partial class ToggleButtonView : ContentView
+public partial class ToggleButton : ContentView
 {
     public static readonly BindableProperty ImageNameProperty =
-        BindableProperty.Create(nameof(ImageName), typeof(string), typeof(ToggleButtonView));
+        BindableProperty.Create(nameof(ImageName), typeof(string), typeof(ToggleButton));
 
     public static readonly BindableProperty VisualElementProperty =
-        BindableProperty.Create(nameof(VisualElement), typeof(VisualElement), typeof(ToggleButtonView));
+        BindableProperty.Create(nameof(VisualElement), typeof(VisualElement), typeof(ToggleButton));
 
     public static readonly BindableProperty LabelTextProperty =
-        BindableProperty.Create(nameof(LabelText), typeof(string), typeof(ToggleButtonView), String.Empty);
+        BindableProperty.Create(nameof(LabelText), typeof(string), typeof(ToggleButton), String.Empty);
 
     public string LabelText
     {
@@ -33,15 +33,15 @@ public partial class ToggleButtonView : ContentView
 
     public ICommand ToggleVisibilityCommand { get; set; }
 
-    public ToggleButtonView()
+    public ToggleButton()
     {
         InitializeComponent();
         ToggleVisibilityCommand = new Command(
             () =>
             {
                 var descendants = (VisualElement?.Parent?.GetVisualTreeDescendants() ?? []).Where(element => element is ContentView and
-                    not ToggleButtonView and
-                    not UriOpenerButtonWithLabelView);
+                    not ToggleButton and
+                    not UriOpenerButtonWithLabel);
                 foreach (var descendant in descendants)
                 {
                     if (descendant is VisualElement visualElement)

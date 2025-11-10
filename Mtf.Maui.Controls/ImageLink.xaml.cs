@@ -22,6 +22,14 @@ public partial class ImageLink : ContentView
                 view.viewModel.Url = newValue as string ?? String.Empty;
             });
 
+    public static readonly BindableProperty ImageSourceProperty =
+        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(ImageLink), new List<string> { ImageLinkViewModel.Unknown },
+            propertyChanged: (bindable, oldValue, newValue) =>
+            {
+                var view = (ImageLink)bindable;
+                view.viewModel.ImageSource = newValue as List<string> ?? new List<string> { ImageLinkViewModel.Unknown };
+            });
+
     public ImageLink()
     {
         InitializeComponent();
@@ -38,5 +46,11 @@ public partial class ImageLink : ContentView
     {
         get => GetValue(ParameterProperty);
         set => SetValue(ParameterProperty, value);
+    }
+
+    public string ImageName
+    {
+        get => ((List<string>)GetValue(ImageSourceProperty))[0];
+        set => SetValue(ImageSourceProperty, new List<string> { value });
     }
 }

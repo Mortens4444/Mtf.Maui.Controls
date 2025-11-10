@@ -4,7 +4,7 @@
                     x:Class="Mtf.Maui.Controls.Resources.Styles.LibraryStyles"
                     xmlns:mc="clr-namespace:Mtf.Maui.Controls">
 
-    <Style TargetType="mc:MenuItemView" x:Key="MenuItemViewStyle">
+    <Style TargetType="mc:MenuItem" x:Key="MenuItemViewStyle">
         <Setter Property="Margin" Value="10" />
         <Setter Property="WidthRequest" Value="80" />
     </Style>

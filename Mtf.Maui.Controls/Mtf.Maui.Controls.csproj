@@ -29,7 +29,7 @@
 
   <PropertyGroup>
     <PackageId>Mtf.Maui.Controls</PackageId>
-    <Version>2.0.36</Version>
+    <Version>2.0.37</Version>
     <Authors>Mortens</Authors>
     <Description>
       The Mtf.Maui.Controls library provides a set of reusable, customizable ContentView components for .NET MAUI applications. These components enhance user interface capabilities with features like labeled controls, hyperlinks, and numeric input.
@@ -88,7 +88,7 @@
 	  <MauiXaml Update="LabelWithToggleCommand.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MenuItemView.xaml">
+	  <MauiXaml Update="MenuItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="NumericUpDownWithLabel.xaml">
@@ -97,16 +97,28 @@
 	  <MauiXaml Update="Resources\Styles\LibraryStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ToggleButtonView.xaml">
+	  <MauiXaml Update="ToggleButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UriOpenerButtonWithLabelView.xaml">
+	  <MauiXaml Update="UriOpenerButtonWithLabel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\unknown.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="MenuItem.xaml.cs">
+	    <DependentUpon>MenuItem.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="ToggleButton.xaml.cs">
+	    <DependentUpon>ToggleButton.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="UriOpenerButtonWithLabel.xaml.cs">
+	    <DependentUpon>UriOpenerButtonWithLabel.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>

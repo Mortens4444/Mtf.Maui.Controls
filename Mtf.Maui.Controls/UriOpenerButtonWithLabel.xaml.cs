@@ -3,16 +3,16 @@ using System.Windows.Input;
 
 namespace Mtf.Maui.Controls;
 
-public partial class UriOpenerButtonWithLabelView : ContentView
+public partial class UriOpenerButtonWithLabel : ContentView
 {
     public static readonly BindableProperty ImageSourceProperty =
-        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(UriOpenerButtonWithLabelView), new List<string> { "unknown" });
+        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(UriOpenerButtonWithLabel), new List<string> { "unknown" });
 
     public static readonly BindableProperty LabelTextProperty =
-        BindableProperty.Create(nameof(LabelText), typeof(string), typeof(UriOpenerButtonWithLabelView), String.Empty);
+        BindableProperty.Create(nameof(LabelText), typeof(string), typeof(UriOpenerButtonWithLabel), String.Empty);
 
     public static readonly BindableProperty UrlToOpenProperty =
-        BindableProperty.Create(nameof(UrlToOpen), typeof(string), typeof(UriOpenerButtonWithLabelView), String.Empty);
+        BindableProperty.Create(nameof(UrlToOpen), typeof(string), typeof(UriOpenerButtonWithLabel), String.Empty);
 
     public static readonly BindableProperty TextColorProperty =
         BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(CheckBoxWithLabel), Colors.White);
@@ -20,7 +20,7 @@ public partial class UriOpenerButtonWithLabelView : ContentView
     public static readonly BindableProperty LabelHorizontalOptionsProperty =
         BindableProperty.Create(nameof(LabelHorizontalOptions), typeof(LayoutOptions), typeof(CheckBoxWithLabel), LayoutOptions.Center);
 
-    public UriOpenerButtonWithLabelView()
+    public UriOpenerButtonWithLabel()
     {
         InitializeComponent();
         BindingContext = this;

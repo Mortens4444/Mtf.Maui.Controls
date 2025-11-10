@@ -4,8 +4,8 @@
              xmlns:mc="clr-namespace:Mtf.Maui.Controls"
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
              xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
-             x:Class="Mtf.Maui.Controls.ToggleButtonView"
-             x:DataType="mc:ToggleButtonView">
+             x:Class="Mtf.Maui.Controls.ToggleButton"
+             x:DataType="mc:ToggleButton">
 
     <ContentView.Resources>
         <ResourceDictionary>

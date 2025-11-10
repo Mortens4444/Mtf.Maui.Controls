@@ -4,7 +4,7 @@
              xmlns:c="clr-namespace:Mtf.Maui.Controls.Converters"
              xmlns:vm="clr-namespace:Mtf.Maui.Controls.ViewModels"
              xmlns:local="clr-namespace:Mtf.Maui.Controls.Resources.Styles"
-             x:Class="Mtf.Maui.Controls.MenuItemView"
+             x:Class="Mtf.Maui.Controls.MenuItem"
              x:DataType="vm:MenuItemViewModel"
              WidthRequest="{Binding Source={x:Reference Root}, Path=WidthRequest}"
              HeightRequest="{Binding Source={x:Reference Root}, Path=HeightRequest}"
