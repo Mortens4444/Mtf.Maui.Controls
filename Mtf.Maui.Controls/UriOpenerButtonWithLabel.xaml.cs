@@ -11,8 +11,8 @@ public partial class UriOpenerButtonWithLabel : ContentView
     public static readonly BindableProperty LabelTextProperty =
         BindableProperty.Create(nameof(LabelText), typeof(string), typeof(UriOpenerButtonWithLabel), String.Empty);
 
-    public static readonly BindableProperty UrlToOpenProperty =
-        BindableProperty.Create(nameof(UrlToOpen), typeof(string), typeof(UriOpenerButtonWithLabel), String.Empty);
+    public static readonly BindableProperty UrlProperty =
+        BindableProperty.Create(nameof(Url), typeof(string), typeof(UriOpenerButtonWithLabel), String.Empty);
 
     public static readonly BindableProperty TextColorProperty =
         BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(CheckBoxWithLabel), Colors.White);
@@ -50,10 +50,10 @@ public partial class UriOpenerButtonWithLabel : ContentView
         set => SetValue(LabelTextProperty, value);
     }
 
-    public string UrlToOpen
+    public string Url
     {
-        get => (string)GetValue(UrlToOpenProperty);
-        set => SetValue(UrlToOpenProperty, value);
+        get => (string)GetValue(UrlProperty);
+        set => SetValue(UrlProperty, value);
     }
 
     public List<string> ImageSource => [ImageName];

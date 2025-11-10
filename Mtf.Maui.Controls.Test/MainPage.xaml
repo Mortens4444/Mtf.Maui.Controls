@@ -44,7 +44,7 @@
                                        Command="{Binding Path=ToggleTextCommand}" />
 
             <mc:UriOpenerButtonWithLabel LabelText="HackWithMe"
-                                         UrlToOpen="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"
+                                         Url="https://play.google.com/store/apps/details?id=com.mortens.H4ckW1thM3"
                                          WidthRequest="150"
                                          TextColor="AliceBlue" />
 
