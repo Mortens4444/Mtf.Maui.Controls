@@ -4,6 +4,13 @@ setlocal enabledelayedexpansion
 set "ProjectName=Mtf.Maui.Controls"
 set "TargetDir=C:\NuGetTest"
 
+for %%F in (".\%ProjectName%\bin\Release\*.nupkg") do (
+    set "FileName=%%~nxF"
+    if not "!FileName!" == "!FileName:.symbols=!" (
+        echo Deleting: %%F
+        del "%%F"
+    )
+)
 for %%F in ("%TargetDir%\%ProjectName%.*.nupkg") do (
     set "FileName=%%~nxF"
     if not "!FileName!" == "!FileName:.symbols=!" (
