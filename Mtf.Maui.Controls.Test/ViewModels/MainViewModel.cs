@@ -4,8 +4,10 @@ using System.Windows.Input;
 
 namespace Mtf.Maui.Controls.Test.ViewModels;
 
-public class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableObject
 {
+    public double PriceMultiplier { get; set; }
+
     public ICommand ToggleTextCommand { get; } = new Command((sender) =>
     {
         var labelWithToggleCommand = sender as IHaveText;

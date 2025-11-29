@@ -26,7 +26,6 @@
                     WidthRequest="44" />
 
             <Entry x:Name="ValueLabel"
-                   Text="{Binding Value}"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
                    Keyboard="Numeric"

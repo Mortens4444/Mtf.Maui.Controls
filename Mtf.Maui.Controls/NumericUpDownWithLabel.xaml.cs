@@ -8,12 +8,13 @@ public partial class NumericUpDownWithLabel : ContentView
 {
     private bool isPressed;
     private const int RepeatRate = 100;
+    private const int InternalPrecision = 6;
 
     public static readonly BindableProperty LabelProperty =
         BindableProperty.Create(nameof(Label), typeof(string), typeof(NumericUpDownWithLabel), String.Empty);
 
     public static readonly BindableProperty ValueProperty =
-        BindableProperty.Create(nameof(Value), typeof(double), typeof(NumericUpDownWithLabel), 0.0, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(Value), typeof(double), typeof(NumericUpDownWithLabel), 0.0, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
     public static readonly BindableProperty MinimumProperty =
         BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0);
@@ -24,6 +25,9 @@ public partial class NumericUpDownWithLabel : ContentView
     public static readonly BindableProperty IncrementProperty =
         BindableProperty.Create(nameof(Increment), typeof(double), typeof(NumericUpDownWithLabel), 1.0);
 
+    public static readonly BindableProperty DecimalPlacesProperty =
+        BindableProperty.Create(nameof(DecimalPlaces), typeof(int), typeof(NumericUpDownWithLabel), -1, propertyChanged: OnDecimalPlacesChanged);
+
     public string Label
     {
         get => (string)GetValue(LabelProperty);
@@ -33,15 +37,7 @@ public partial class NumericUpDownWithLabel : ContentView
     public double Value
     {
         get => (double)GetValue(ValueProperty);
-        set
-        {
-            var newValue = Math.Clamp(value, Minimum, Maximum);
-            if (newValue != (double)GetValue(ValueProperty))
-            {
-                SetValue(ValueProperty, newValue);
-                ValueChanged?.Invoke(this, new ValueChangedEventArgs(newValue));
-            }
-        }
+        set => SetValue(ValueProperty, value);
     }
 
     public double Minimum
@@ -62,9 +58,60 @@ public partial class NumericUpDownWithLabel : ContentView
         set => SetValue(IncrementProperty, value);
     }
 
+    public int DecimalPlaces
+    {
+        get => (int)GetValue(DecimalPlacesProperty);
+        set => SetValue(DecimalPlacesProperty, value);
+    }
+
     public event EventHandler<ValueChangedEventArgs>? ValueChanged;
 
-    public NumericUpDownWithLabel() => InitializeComponent();
+    public NumericUpDownWithLabel()
+    {
+        InitializeComponent();
+        UpdateEntryText(true);
+    }
+
+    private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is NumericUpDownWithLabel control)
+        {
+            control.ValueChanged?.Invoke(control, new ValueChangedEventArgs((double)oldValue, (double)newValue));
+            control.UpdateEntryText(false);
+        }
+    }
+
+    private static void OnDecimalPlacesChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is NumericUpDownWithLabel control)
+        {
+            control.UpdateEntryText(true);
+        }
+    }
+
+    private void UpdateEntryText(bool force)
+    {
+        if (ValueLabel == null)
+        {
+            return;
+        }
+
+        if (!force && ValueLabel.IsFocused)
+        {
+            return;
+        }
+
+        ValueLabel.Text = Value.ToString(GetFormatString(), CultureInfo.CurrentCulture);
+    }
+
+    private string GetFormatString()
+    {
+        if (DecimalPlaces < 0)
+        {
+            return (Increment % 1 != 0) ? "0.##" : "0.##";
+        }
+        return $"F{DecimalPlaces}";
+    }
 
     private async void OnIncrementPressed(object sender, EventArgs e)
     {
@@ -80,18 +127,31 @@ public partial class NumericUpDownWithLabel : ContentView
 
     private async Task StartValueChange(bool isIncrementing)
     {
+        if (ValueLabel.IsFocused)
+        {
+            ValueLabel.Unfocus();
+        }
+
         while (isPressed)
         {
-            if (isIncrementing && Value + Increment <= Maximum)
+            double newValue = isIncrementing ? Value + Increment : Value - Increment;
+            newValue = Math.Round(newValue, InternalPrecision);
+
+            if (newValue >= Minimum && newValue <= Maximum)
             {
-                Value += Increment;
+                Value = newValue;
             }
-            else if (!isIncrementing && Value - Increment >= Minimum)
+            else if (isIncrementing && Value < Maximum)
             {
-                Value -= Increment;
+                Value = Maximum;
+            }
+            else if (!isIncrementing && Value > Minimum)
+            {
+                Value = Minimum;
             }
 
-            ValueLabel.Text = Value.ToString(CultureInfo.InvariantCulture);
+            UpdateEntryText(true);
+
             await Task.Delay(RepeatRate).ConfigureAwait(true);
         }
     }
@@ -100,47 +160,55 @@ public partial class NumericUpDownWithLabel : ContentView
 
     private void OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        var newValue = e.NewTextValue;
-        var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-        if (!Double.TryParse(newValue, NumberStyles.Any, CultureInfo.CurrentCulture, out var value))
+        if (!((Entry)sender).IsFocused)
         {
-            ((Entry)sender).Text = String.Concat(newValue.Where(c => Char.IsDigit(c) || c.ToString() == decimalSeparator));
+            return;
         }
-        else
+
+        var text = e.NewTextValue;
+
+        if (String.IsNullOrEmpty(text) || text == "-" || text == "." || text == ",")
         {
-            if (value < Minimum)
-            {
-                ((Entry)sender).Text = Minimum.ToString(CultureInfo.InvariantCulture);
-                var message = new ShowErrorMessage($"Value must be greater than or equal to {Minimum}");
-                _ = WeakReferenceMessenger.Default.Send(message);
-            }
-            else if (value > Maximum)
-            {
-                ((Entry)sender).Text = Maximum.ToString(CultureInfo.InvariantCulture);
-                var message = new ShowErrorMessage($"Value must be less than or equal to {Maximum}");
-                _ = WeakReferenceMessenger.Default.Send(message);
-            }
+            Value = Minimum;
+            return;
         }
+
+        if (Double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out var result) ||
+            Double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
+        {
+            Value = Math.Clamp(result, Minimum, Maximum);
+        }
+    }
+
+    private void OnEntryCompleted(object sender, EventArgs e)
+    {
+        ValidateAndCommitValue();
+        ValueLabel.Unfocus();
     }
 
     private void OnEntryUnfocused(object sender, FocusEventArgs e)
     {
-        if (Double.TryParse(ValueLabel.Text, out var enteredValue))
-        {
-            Value = enteredValue < Minimum ? Minimum : enteredValue > Maximum ? Maximum : enteredValue;
-        }
-        ValueLabel.Text = Value.ToString(CultureInfo.InvariantCulture);
+        ValidateAndCommitValue();
     }
-}
 
-public class ValueChangedEventArgs(double newValue) : EventArgs
-{
-    public double NewValue { get; } = newValue;
-}
+    private void ValidateAndCommitValue()
+    {
+        var text = ValueLabel.Text;
 
-public class ValueChangedEventArgsConverter : IValueConverter
-{
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is ValueChangedEventArgs args ? args.NewValue : (object?)null;
+        if (Double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out var result) ||
+            Double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
+        {
+            var clamped = Math.Clamp(result, Minimum, Maximum);
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+            if (Math.Abs(clamped - result) > 0.0001)
+            {
+                var msg = result < Minimum ? $"Value must be >= {Minimum}" : $"Value must be <= {Maximum}";
+                _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
+            }
+
+            Value = Math.Round(clamped, InternalPrecision);
+        }
+
+        UpdateEntryText(true);
+    }
 }
