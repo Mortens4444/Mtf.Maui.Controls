@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Mtf.Maui.Controls.Models;
 using System.Globalization;
+using System.Windows.Input;
 
 namespace Mtf.Maui.Controls;
 
@@ -27,6 +28,12 @@ public partial class NumericUpDownWithLabel : ContentView
 
     public static readonly BindableProperty DecimalPlacesProperty =
         BindableProperty.Create(nameof(DecimalPlaces), typeof(int), typeof(NumericUpDownWithLabel), -1, propertyChanged: OnDecimalPlacesChanged);
+    
+    public static readonly BindableProperty IncrementCommandProperty =
+        BindableProperty.Create(nameof(IncrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel));
+
+    public static readonly BindableProperty DecrementCommandProperty =
+        BindableProperty.Create(nameof(DecrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel));
 
     public string Label
     {
@@ -63,6 +70,19 @@ public partial class NumericUpDownWithLabel : ContentView
         get => (int)GetValue(DecimalPlacesProperty);
         set => SetValue(DecimalPlacesProperty, value);
     }
+
+    public ICommand? IncrementCommand
+    {
+        get => (ICommand?)GetValue(IncrementCommandProperty);
+        set => SetValue(IncrementCommandProperty, value);
+    }
+
+    public ICommand? DecrementCommand
+    {
+        get => (ICommand?)GetValue(DecrementCommandProperty);
+        set => SetValue(DecrementCommandProperty, value);
+    }
+
 
     public event EventHandler<ValueChangedEventArgs>? ValueChanged;
 
@@ -115,12 +135,14 @@ public partial class NumericUpDownWithLabel : ContentView
 
     private async void OnIncrementPressed(object sender, EventArgs e)
     {
+        IncrementCommand?.Execute(null);
         isPressed = true;
         await StartValueChange(true).ConfigureAwait(true);
     }
 
     private async void OnDecrementPressed(object sender, EventArgs e)
     {
+        DecrementCommand?.Execute(null);
         isPressed = true;
         await StartValueChange(false).ConfigureAwait(true);
     }
