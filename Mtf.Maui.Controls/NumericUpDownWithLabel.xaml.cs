@@ -135,14 +135,12 @@ public partial class NumericUpDownWithLabel : ContentView
 
     private async void OnIncrementPressed(object sender, EventArgs e)
     {
-        IncrementCommand?.Execute(null);
         isPressed = true;
         await StartValueChange(true).ConfigureAwait(true);
     }
 
     private async void OnDecrementPressed(object sender, EventArgs e)
     {
-        DecrementCommand?.Execute(null);
         isPressed = true;
         await StartValueChange(false).ConfigureAwait(true);
     }
@@ -173,6 +171,8 @@ public partial class NumericUpDownWithLabel : ContentView
             }
 
             UpdateEntryText(true);
+            var command = isIncrementing ? IncrementCommand : DecrementCommand;
+            command?.Execute(null);
 
             await Task.Delay(RepeatRate).ConfigureAwait(true);
         }
