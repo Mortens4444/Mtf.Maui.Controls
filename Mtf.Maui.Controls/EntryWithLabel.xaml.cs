@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Mtf.Maui.Controls.Models;
+using Mtf.Maui.Controls.Messages;
 
 namespace Mtf.Maui.Controls;
 

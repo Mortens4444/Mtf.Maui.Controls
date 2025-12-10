@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Mtf.Maui.Controls.Extensions;
 
-namespace Mtf.Maui.Controls.Models;
+namespace Mtf.Maui.Controls.Messages;
 
 public class ShowErrorMessage : ValueChangedMessage<string>
 {

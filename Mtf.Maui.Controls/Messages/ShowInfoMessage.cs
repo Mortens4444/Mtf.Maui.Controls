@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace Mtf.Maui.Controls.Models;
+namespace Mtf.Maui.Controls.Messages;
 
-public class ShowInfoMessage(string title, string message) : ValueChangedMessage<string>(String.Empty)
+public class ShowInfoMessage(string title, string message) : ValueChangedMessage<string>(string.Empty)
 {
     public string Title { get; init; } = title;
 

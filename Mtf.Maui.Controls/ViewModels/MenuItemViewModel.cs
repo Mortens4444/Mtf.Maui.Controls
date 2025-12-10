@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Mtf.Maui.Controls.Models;
+using Mtf.Maui.Controls.Messages;
 using Mtf.Maui.Controls.Services;
 using System.Windows.Input;
 
