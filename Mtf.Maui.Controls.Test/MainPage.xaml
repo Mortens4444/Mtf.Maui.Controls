@@ -23,7 +23,6 @@
 
             <mc:CheckBoxWithLabel IsChecked="True" Label="Encode Whitespaces" TextColor="Red" />
 
-
             <mc:NumericUpDownWithLabel Grid.Column="1" Label="Price Multiplier"
                                            Minimum="0.01" Maximum="10.0" Increment="0.1"
                                            Value="{Binding PriceMultiplier}" 

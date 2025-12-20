@@ -7,6 +7,7 @@ namespace Mtf.Maui.Controls;
 
 public partial class NumericUpDownWithLabel : ContentView
 {
+    private bool isRunning;
     private bool isPressed;
     private const int RepeatRate = 100;
     private const int InternalPrecision = 6;
@@ -147,34 +148,53 @@ public partial class NumericUpDownWithLabel : ContentView
 
     private async Task StartValueChange(bool isIncrementing)
     {
-        if (ValueLabel.IsFocused)
+        if (isRunning)
         {
-            ValueLabel.Unfocus();
+            return;
         }
+        isRunning = true;
 
-        while (isPressed)
+        try
         {
-            double newValue = isIncrementing ? Value + Increment : Value - Increment;
-            newValue = Math.Round(newValue, InternalPrecision);
-
-            if (newValue >= Minimum && newValue <= Maximum)
+            if (ValueLabel.IsFocused)
             {
-                Value = newValue;
-            }
-            else if (isIncrementing && Value < Maximum)
-            {
-                Value = Maximum;
-            }
-            else if (!isIncrementing && Value > Minimum)
-            {
-                Value = Minimum;
+                ValueLabel.Unfocus();
             }
 
-            UpdateEntryText(true);
-            var command = isIncrementing ? IncrementCommand : DecrementCommand;
-            command?.Execute(null);
+            while (isPressed)
+            {
+                if (!IsLoaded || !IsVisible || !IsEnabled)
+                {
+                    isPressed = false;
+                    break;
+                }
 
-            await Task.Delay(RepeatRate).ConfigureAwait(true);
+                double newValue = isIncrementing ? Value + Increment : Value - Increment;
+                newValue = Math.Round(newValue, InternalPrecision);
+
+                if (newValue >= Minimum && newValue <= Maximum)
+                {
+                    Value = newValue;
+                }
+                else if (isIncrementing && Value < Maximum)
+                {
+                    Value = Maximum;
+                }
+                else if (!isIncrementing && Value > Minimum)
+                {
+                    Value = Minimum;
+                }
+
+                UpdateEntryText(true);
+                var command = isIncrementing ? IncrementCommand : DecrementCommand;
+                command?.Execute(null);
+
+                await Task.Delay(RepeatRate).ConfigureAwait(true);
+            }
+        }
+        finally
+        {
+            isRunning = false;
         }
     }
 
