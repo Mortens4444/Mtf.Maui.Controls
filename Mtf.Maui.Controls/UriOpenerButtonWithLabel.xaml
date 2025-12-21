@@ -20,7 +20,7 @@
         <VerticalStackLayout VerticalOptions="Center">
             <VerticalStackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding OpenUriCommand}"
-                                      CommandParameter="{Binding UrlToOpen}" />
+                                      CommandParameter="{Binding Url}" />
             </VerticalStackLayout.GestureRecognizers>
             <Image Style="{StaticResource MenuButtonStyle}">
                 <Image.Source>

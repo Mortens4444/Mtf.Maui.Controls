@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Mtf.Maui.Controls.Messages;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 
@@ -19,10 +20,10 @@ public partial class NumericUpDownWithLabel : ContentView
         BindableProperty.Create(nameof(Value), typeof(double), typeof(NumericUpDownWithLabel), 0.0, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
     public static readonly BindableProperty MinimumProperty =
-        BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0);
+        BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0, propertyChanged: OnMinMaxChanged);
 
     public static readonly BindableProperty MaximumProperty =
-        BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0);
+        BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0, propertyChanged: OnMinMaxChanged);
 
     public static readonly BindableProperty IncrementProperty =
         BindableProperty.Create(nameof(Increment), typeof(double), typeof(NumericUpDownWithLabel), 1.0);
@@ -129,7 +130,7 @@ public partial class NumericUpDownWithLabel : ContentView
     {
         if (DecimalPlaces < 0)
         {
-            return (Increment % 1 != 0) ? "0.##" : "0.##";
+            return (Increment % 1 == 0) ? "0" : "0.##";
         }
         return $"F{DecimalPlaces}";
     }
@@ -185,7 +186,7 @@ public partial class NumericUpDownWithLabel : ContentView
                     Value = Minimum;
                 }
 
-                UpdateEntryText(true);
+                //UpdateEntryText(true);
                 var command = isIncrementing ? IncrementCommand : DecrementCommand;
                 command?.Execute(null);
 
@@ -211,7 +212,7 @@ public partial class NumericUpDownWithLabel : ContentView
 
         if (String.IsNullOrEmpty(text) || text == "-" || text == "." || text == ",")
         {
-            Value = Minimum;
+            //Value = Minimum;
             return;
         }
 
@@ -252,5 +253,22 @@ public partial class NumericUpDownWithLabel : ContentView
         }
 
         UpdateEntryText(true);
+    }
+
+    private void Button_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IsVisible))
+        {
+            isPressed = false;
+        }
+    }
+
+    private static void OnMinMaxChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is NumericUpDownWithLabel c)
+        {
+            c.Value = Math.Clamp(c.Value, c.Minimum, c.Maximum);
+            c.UpdateEntryText(true);
+        }
     }
 }
