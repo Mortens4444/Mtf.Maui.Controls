@@ -20,10 +20,10 @@ public partial class NumericUpDownWithLabel : ContentView
         BindableProperty.Create(nameof(Value), typeof(double), typeof(NumericUpDownWithLabel), 0.0, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
     public static readonly BindableProperty MinimumProperty =
-        BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0, propertyChanged: OnMinMaxChanged);
+        BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0);
 
     public static readonly BindableProperty MaximumProperty =
-        BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0, propertyChanged: OnMinMaxChanged);
+        BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0);
 
     public static readonly BindableProperty IncrementProperty =
         BindableProperty.Create(nameof(Increment), typeof(double), typeof(NumericUpDownWithLabel), 1.0);
@@ -170,25 +170,31 @@ public partial class NumericUpDownWithLabel : ContentView
                     break;
                 }
 
-                double newValue = isIncrementing ? Value + Increment : Value - Increment;
-                newValue = Math.Round(newValue, InternalPrecision);
-
-                if (newValue >= Minimum && newValue <= Maximum)
-                {
-                    Value = newValue;
-                }
-                else if (isIncrementing && Value < Maximum)
-                {
-                    Value = Maximum;
-                }
-                else if (!isIncrementing && Value > Minimum)
-                {
-                    Value = Minimum;
-                }
-
-                //UpdateEntryText(true);
                 var command = isIncrementing ? IncrementCommand : DecrementCommand;
-                command?.Execute(null);
+                if (command != null)
+                {
+                    command.Execute(null);
+                }
+                else
+                {
+                    double newValue = isIncrementing ? Value + Increment : Value - Increment;
+                    newValue = Math.Round(newValue, InternalPrecision);
+
+                    if (newValue >= Minimum && newValue <= Maximum)
+                    {
+                        Value = newValue;
+                    }
+                    else if (isIncrementing && Value < Maximum)
+                    {
+                        Value = Maximum;
+                    }
+                    else if (!isIncrementing && Value > Minimum)
+                    {
+                        Value = Minimum;
+                    }
+
+                    UpdateEntryText(true);
+                }
 
                 await Task.Delay(RepeatRate).ConfigureAwait(true);
             }
@@ -260,15 +266,6 @@ public partial class NumericUpDownWithLabel : ContentView
         if (e.PropertyName == nameof(IsVisible))
         {
             isPressed = false;
-        }
-    }
-
-    private static void OnMinMaxChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is NumericUpDownWithLabel c)
-        {
-            c.Value = Math.Clamp(c.Value, c.Minimum, c.Maximum);
-            c.UpdateEntryText(true);
         }
     }
 }
