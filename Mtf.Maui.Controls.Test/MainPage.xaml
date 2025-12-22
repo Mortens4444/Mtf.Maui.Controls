@@ -30,12 +30,13 @@
 
             <mc:NumericUpDownWithLabel x:Name="BitBlockSize"
                                        Label="Block Size (in bits)"
-                                       Minimum="8"
-                                       Maximum="8000"
+                                       Minimum="{Binding MinBlockSize}"
+                                       Maximum="{Binding MaxBlockSize}"
                                        Increment="8"
-                                       Value="8"
+                                       Value="{Binding BlockSize}"
                                        HorizontalOptions="Center"
-                                       Margin="10" />
+                                       Margin="10"
+                                       IncrementCommand="{Binding IncrementCommand}" />
             
             <mc:EntryWithLabel x:Name="IV"
                                Label="Initialization Vector (IV) (Hexadecimal)"

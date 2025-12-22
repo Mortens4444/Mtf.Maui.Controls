@@ -8,13 +8,36 @@ public partial class MainViewModel : ObservableObject
 {
     public double PriceMultiplier { get; set; }
 
-    public ICommand ToggleTextCommand { get; } = new Command((sender) =>
-    {
-        var labelWithToggleCommand = sender as IHaveText;
-        labelWithToggleCommand.Text = "Changed...";
-        //labelWithToggleCommand.Text = labelWithToggleCommand.Text.ChangeExpanderText();
+    [ObservableProperty]
+    private double blockSize = 8;
+    
+    [ObservableProperty]
+    private double minBlockSize = 8;
+    
+    [ObservableProperty]
+    private double maxBlockSize = 800;
 
-        //var expander = (sender as ContentView)?.Parent?.Parent as Expander;
-        //expander.IsExpanded = !expander.IsExpanded;
-    });
+    public ICommand ToggleTextCommand { get; }
+    public ICommand IncrementCommand { get; }
+
+    public MainViewModel()
+    {
+        ToggleTextCommand = new Command(sender =>
+        {
+            if (sender is IHaveText label)
+            {
+                label.Text = "Changed...";
+                //labelWithToggleCommand.Text = labelWithToggleCommand.Text.ChangeExpanderText();
+
+                //var expander = (sender as ContentView)?.Parent?.Parent as Expander;
+                //expander.IsExpanded = !expander.IsExpanded;
+            }
+        });
+
+        IncrementCommand = new Command(() =>
+        {
+            MinBlockSize = 804;
+            OnPropertyChanged(nameof(MinBlockSize));
+        });
+    }
 }

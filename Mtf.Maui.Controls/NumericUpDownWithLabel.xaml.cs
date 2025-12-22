@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Mtf.Maui.Controls.Messages;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Input;
 
@@ -20,10 +21,10 @@ public partial class NumericUpDownWithLabel : ContentView
         BindableProperty.Create(nameof(Value), typeof(double), typeof(NumericUpDownWithLabel), 0.0, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
     public static readonly BindableProperty MinimumProperty =
-        BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0);
+        BindableProperty.Create(nameof(Minimum), typeof(double), typeof(NumericUpDownWithLabel), 0.0, propertyChanged: OnMinimumChanged);
 
     public static readonly BindableProperty MaximumProperty =
-        BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0);
+        BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0, propertyChanged: OnMaximumChanged);
 
     public static readonly BindableProperty IncrementProperty =
         BindableProperty.Create(nameof(Increment), typeof(double), typeof(NumericUpDownWithLabel), 1.0);
@@ -177,6 +178,17 @@ public partial class NumericUpDownWithLabel : ContentView
                 }
                 else
                 {
+                    if (Minimum > Maximum)
+                    {
+                        var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Invalid range: Minimum ({Minimum}) > Maximum ({Maximum}). Please fix the bounds ({nameof(StartValueChange)}).";
+                        Debug.WriteLine(msg);
+                        _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
+                        UpdateEntryText(true);
+                        isPressed = false;
+                        throw new InvalidDataException(msg);
+                        //break;
+                    }
+
                     double newValue = isIncrementing ? Value + Increment : Value - Increment;
                     newValue = Math.Round(newValue, InternalPrecision);
 
@@ -247,6 +259,16 @@ public partial class NumericUpDownWithLabel : ContentView
         if (Double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out var result) ||
             Double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
         {
+            if (Minimum > Maximum)
+            {
+                var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Invalid range: Minimum ({Minimum}) > Maximum ({Maximum}). Please fix the bounds ({nameof(ValidateAndCommitValue)}).";
+                Debug.WriteLine(msg);
+                _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
+                throw new InvalidDataException(msg);
+                //UpdateEntryText(true);
+                //return;
+            }
+
             var clamped = Math.Clamp(result, Minimum, Maximum);
 
             if (Math.Abs(clamped - result) > 0.0001)
@@ -268,4 +290,57 @@ public partial class NumericUpDownWithLabel : ContentView
             isPressed = false;
         }
     }
+
+    private static void OnMinimumChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is not NumericUpDownWithLabel control)
+        {
+            return;
+        }
+
+        var min = (double)newValue;
+        if (min > control.Maximum)
+        {
+            var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Minimum ({min}) was greater than Maximum ({control.Maximum}). Please fix the bounds {nameof(OnMinimumChanged)}.";
+            Debug.WriteLine(msg);
+            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
+            throw new InvalidDataException(msg);
+            //_ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage($"Minimum ({min}) was greater than Maximum ({control.Maximum}); Maximum adjusted to {min}."));
+            //control.Maximum = min;
+        }
+
+        if (control.Value < min)
+        {
+            control.Value = min;
+        }
+
+        control.UpdateEntryText(true);
+    }
+
+    private static void OnMaximumChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is not NumericUpDownWithLabel control)
+        {
+            return;
+        }
+
+        var max = (double)newValue;
+        if (max < control.Minimum)
+        {
+            var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Maximum ({max}) was less than Minimum ({control.Minimum}). Please fix the bounds {nameof(OnMaximumChanged)}.";
+            Debug.WriteLine(msg);
+            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
+            throw new InvalidDataException(msg);
+            //_ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage($"Maximum ({max}) was less than Minimum ({control.Minimum}); Minimum adjusted to {max}."));
+            //control.Minimum = max;
+        }
+
+        if (control.Value > max)
+        {
+            control.Value = max;
+        }
+
+        control.UpdateEntryText(true);
+    }
+
 }
