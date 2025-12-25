@@ -19,6 +19,7 @@ public partial class MainViewModel : ObservableObject
 
     public ICommand ToggleTextCommand { get; }
     public ICommand IncrementCommand { get; }
+    public ICommand DecrementCommand { get; }
 
     public MainViewModel()
     {
@@ -36,7 +37,13 @@ public partial class MainViewModel : ObservableObject
 
         IncrementCommand = new Command(() =>
         {
-            MinBlockSize = 804;
+            BlockSize += 8;
+            OnPropertyChanged(nameof(MinBlockSize));
+        });
+
+        DecrementCommand = new Command(() =>
+        {
+            BlockSize -= 8;
             OnPropertyChanged(nameof(MinBlockSize));
         });
     }

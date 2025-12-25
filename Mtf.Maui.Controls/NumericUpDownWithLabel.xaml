@@ -20,12 +20,12 @@
         <HorizontalStackLayout>
             <Button Text="-"
                     Pressed="OnDecrementPressed"
-                    Released="OnButtonReleased"
-                    Unfocused="OnButtonReleased"
+                    Released="OnDecrementReleased"
+                    Unfocused="DecreaseButton_Unfocused"
                     Margin="0,0,5,0"
                     MaximumHeightRequest="44"
                     WidthRequest="44"
-                    PropertyChanged="Button_PropertyChanged" />
+                    PropertyChanged="DecreaseButton_PropertyChanged" />
 
             <Entry x:Name="ValueLabel"
                    VerticalOptions="Center"
@@ -37,12 +37,12 @@
 
             <Button Text="+"
                     Pressed="OnIncrementPressed"
-                    Released="OnButtonReleased"
-                    Unfocused="OnButtonReleased"
+                    Released="OnIncrementReleased"
+                    Unfocused="IncreaseButton_Unfocused"
                     Margin="5,0,0,0"
                     MaximumHeightRequest="44"
                     WidthRequest="44"
-                    PropertyChanged="Button_PropertyChanged" />
+                    PropertyChanged="IncreaseButton_PropertyChanged" />
         </HorizontalStackLayout>
     </VerticalStackLayout>
 

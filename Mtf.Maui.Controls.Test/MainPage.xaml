@@ -33,9 +33,10 @@
                                        Minimum="{Binding MinBlockSize}"
                                        Maximum="{Binding MaxBlockSize}"
                                        Increment="8"
-                                       Value="{Binding BlockSize}"
+                                       Value="{Binding BlockSize, Mode=TwoWay}"
                                        HorizontalOptions="Center"
                                        Margin="10"
+                                       DecrementCommand="{Binding DecrementCommand}"
                                        IncrementCommand="{Binding IncrementCommand}" />
             
             <mc:EntryWithLabel x:Name="IV"

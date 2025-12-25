@@ -3,14 +3,15 @@ using Mtf.Maui.Controls.Messages;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Mtf.Maui.Controls;
 
 public partial class NumericUpDownWithLabel : ContentView
 {
-    private bool isRunning;
-    private bool isPressed;
+    private CancellationTokenSource? repeatIncreaseCts;
+    private CancellationTokenSource? repeatDecreaseCts;
     private const int RepeatRate = 100;
     private const int InternalPrecision = 6;
 
@@ -31,7 +32,7 @@ public partial class NumericUpDownWithLabel : ContentView
 
     public static readonly BindableProperty DecimalPlacesProperty =
         BindableProperty.Create(nameof(DecimalPlaces), typeof(int), typeof(NumericUpDownWithLabel), -1, propertyChanged: OnDecimalPlacesChanged);
-    
+
     public static readonly BindableProperty IncrementCommandProperty =
         BindableProperty.Create(nameof(IncrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel));
 
@@ -86,7 +87,6 @@ public partial class NumericUpDownWithLabel : ContentView
         set => SetValue(DecrementCommandProperty, value);
     }
 
-
     public event EventHandler<ValueChangedEventArgs>? ValueChanged;
 
     public NumericUpDownWithLabel()
@@ -136,38 +136,64 @@ public partial class NumericUpDownWithLabel : ContentView
         return $"F{DecimalPlaces}";
     }
 
-    private async void OnIncrementPressed(object sender, EventArgs e)
-    {
-        isPressed = true;
-        await StartValueChange(true).ConfigureAwait(true);
-    }
+    private void OnIncrementPressed(object s, EventArgs e) => StartRepeat(true);
 
-    private async void OnDecrementPressed(object sender, EventArgs e)
-    {
-        isPressed = true;
-        await StartValueChange(false).ConfigureAwait(true);
-    }
+    private void OnIncrementReleased(object s, EventArgs e) => StopIncrease();
 
-    private async Task StartValueChange(bool isIncrementing)
+    private void OnDecrementPressed(object s, EventArgs e) => StartRepeat(false);
+
+    private void OnDecrementReleased(object s, EventArgs e) => StopDecrease();
+
+    private void IncreaseButton_Unfocused(object sender, FocusEventArgs e) => StopIncrease();
+
+    private void DecreaseButton_Unfocused(object sender, FocusEventArgs e) => StopDecrease();
+
+    private void StartRepeat(bool isIncrementing)
     {
-        if (isRunning)
+        if (isIncrementing)
         {
-            return;
-        }
-        isRunning = true;
+            StopDecrease();
 
+            repeatIncreaseCts?.Cancel();
+            repeatIncreaseCts?.Dispose();
+            repeatIncreaseCts = new CancellationTokenSource();
+            _ = StartValueChangeLoopAsync(isIncrementing, repeatIncreaseCts);
+        }
+        else
+        {
+            StopIncrease();
+
+            repeatDecreaseCts?.Cancel();
+            repeatDecreaseCts?.Dispose();
+            repeatDecreaseCts = new CancellationTokenSource();
+            _ = StartValueChangeLoopAsync(isIncrementing, repeatDecreaseCts);
+        }
+    }
+
+    private async Task StartValueChangeLoopAsync(bool isIncrementing, CancellationTokenSource cancellationTokenSource)
+    {
         try
         {
+            var token = cancellationTokenSource.Token;
             if (ValueLabel.IsFocused)
             {
-                ValueLabel.Unfocus();
+                MainThread.BeginInvokeOnMainThread(() => ValueLabel.Unfocus());
             }
 
-            while (isPressed)
+            while (!token.IsCancellationRequested)
             {
                 if (!IsLoaded || !IsVisible || !IsEnabled)
                 {
-                    isPressed = false;
+                    break;
+                }
+                if (Value <= Minimum && !isIncrementing)
+                {
+                    Value = Minimum;
+                    break;
+                }
+                if (Value >= Maximum && isIncrementing)
+                {
+                    Value = Maximum;
                     break;
                 }
 
@@ -180,13 +206,8 @@ public partial class NumericUpDownWithLabel : ContentView
                 {
                     if (Minimum > Maximum)
                     {
-                        var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Invalid range: Minimum ({Minimum}) > Maximum ({Maximum}). Please fix the bounds ({nameof(StartValueChange)}).";
-                        Debug.WriteLine(msg);
-                        _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
-                        UpdateEntryText(true);
-                        isPressed = false;
-                        throw new InvalidDataException(msg);
-                        //break;
+                        SafetyCheck();
+                        break;
                     }
 
                     double newValue = isIncrementing ? Value + Increment : Value - Increment;
@@ -213,11 +234,16 @@ public partial class NumericUpDownWithLabel : ContentView
         }
         finally
         {
-            isRunning = false;
+            if (isIncrementing)
+            {
+                StopIncrease();
+            }
+            else
+            {
+                StopDecrease();
+            }
         }
     }
-
-    private void OnButtonReleased(object sender, EventArgs e) => isPressed = false;
 
     private void OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -230,7 +256,6 @@ public partial class NumericUpDownWithLabel : ContentView
 
         if (String.IsNullOrEmpty(text) || text == "-" || text == "." || text == ",")
         {
-            //Value = Minimum;
             return;
         }
 
@@ -261,12 +286,8 @@ public partial class NumericUpDownWithLabel : ContentView
         {
             if (Minimum > Maximum)
             {
-                var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Invalid range: Minimum ({Minimum}) > Maximum ({Maximum}). Please fix the bounds ({nameof(ValidateAndCommitValue)}).";
-                Debug.WriteLine(msg);
-                _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
-                throw new InvalidDataException(msg);
-                //UpdateEntryText(true);
-                //return;
+                SafetyCheck();
+                return;
             }
 
             var clamped = Math.Clamp(result, Minimum, Maximum);
@@ -283,11 +304,27 @@ public partial class NumericUpDownWithLabel : ContentView
         UpdateEntryText(true);
     }
 
-    private void Button_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void SafetyCheck([CallerMemberName] string caller = "")
+    {
+        var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Invalid range: Minimum ({Minimum}) > Maximum ({Maximum}). Please fix the bounds ({caller}).";
+        Debug.WriteLine(msg);
+        _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
+        UpdateEntryText(true);
+    }
+
+    private void IncreaseButton_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(IsVisible))
         {
-            isPressed = false;
+            StopIncrease();
+        }
+    }
+
+    private void DecreaseButton_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IsVisible))
+        {
+            StopDecrease();
         }
     }
 
@@ -301,14 +338,10 @@ public partial class NumericUpDownWithLabel : ContentView
         var min = (double)newValue;
         if (min > control.Maximum)
         {
-            var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Minimum ({min}) was greater than Maximum ({control.Maximum}). Please fix the bounds {nameof(OnMinimumChanged)}.";
+            var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Minimum ({min}) was greater than Maximum ({control.Maximum}). Auto correcting in {nameof(OnMinimumChanged)}.";
             Debug.WriteLine(msg);
-            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
-            throw new InvalidDataException(msg);
-            //_ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage($"Minimum ({min}) was greater than Maximum ({control.Maximum}); Maximum adjusted to {min}."));
-            //control.Maximum = min;
+            control.SetValue(MinimumProperty, control.Maximum);
         }
-
         if (control.Value < min)
         {
             control.Value = min;
@@ -327,12 +360,9 @@ public partial class NumericUpDownWithLabel : ContentView
         var max = (double)newValue;
         if (max < control.Minimum)
         {
-            var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Maximum ({max}) was less than Minimum ({control.Minimum}). Please fix the bounds {nameof(OnMaximumChanged)}.";
+            var msg = $"[{nameof(NumericUpDownWithLabel)} Warning] Maximum ({max}) was less than Minimum ({control.Minimum}). Auto correcting in {nameof(OnMaximumChanged)}.";
             Debug.WriteLine(msg);
-            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(msg));
-            throw new InvalidDataException(msg);
-            //_ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage($"Maximum ({max}) was less than Minimum ({control.Minimum}); Minimum adjusted to {max}."));
-            //control.Minimum = max;
+            control.SetValue(MaximumProperty, control.Minimum);
         }
 
         if (control.Value > max)
@@ -343,4 +373,37 @@ public partial class NumericUpDownWithLabel : ContentView
         control.UpdateEntryText(true);
     }
 
+    private void StopIncrease()
+    {
+        try
+        {
+            repeatIncreaseCts?.Cancel();
+            repeatIncreaseCts?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+        finally
+        {
+            repeatIncreaseCts = null;
+        }
+    }
+
+    private void StopDecrease()
+    {
+        try
+        {
+            repeatDecreaseCts?.Cancel();
+            repeatDecreaseCts?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+        finally
+        {
+            repeatDecreaseCts = null;
+        }
+    }
 }
