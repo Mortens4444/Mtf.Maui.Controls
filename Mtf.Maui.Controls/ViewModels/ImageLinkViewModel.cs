@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Mtf.Maui.Controls.Messages;
+using Mtf.Maui.Controls.Extensions;
 using System.Windows.Input;
 
 namespace Mtf.Maui.Controls.ViewModels;
@@ -9,20 +8,21 @@ namespace Mtf.Maui.Controls.ViewModels;
 public partial class ImageLinkViewModel : ObservableObject
 {
     private int isNavigating;
-    private string url;
+    private string? url;
     private object? parameter;
     private ICommand? afterExecution;
 
     public const string Unknown = "unknown.scale-100";
 
-    public List<string> imageSource = new(new List<string> { Unknown });
+    private List<string> imageSource = new(new List<string> { Unknown });
 
     public List<string> ImageSource
     {
         get => imageSource;
         set => SetProperty(ref imageSource, value);
     }
-    public string Url
+
+    public string? Url
     {
         get => url;
         set => SetProperty(ref url, value);
@@ -59,15 +59,13 @@ public partial class ImageLinkViewModel : ObservableObject
                 }
                 catch (Exception ex)
                 {
-                    _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(ex));
-                    //Debug.WriteLine(ex);
-                    //await Console.Error.WriteLineAsync(ex.ToString()).ConfigureAwait(false);
+                    await ex.ShowErrorAsync().ConfigureAwait(false);
                 }
             }
         }
         catch (Exception ex)
         {
-            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(ex));
+            await ex.ShowErrorAsync().ConfigureAwait(false);
         }
         finally
         {

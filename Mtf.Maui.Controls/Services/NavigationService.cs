@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using Mtf.Maui.Controls.Extensions;
 
 namespace Mtf.Maui.Controls.Services;
 
@@ -21,9 +21,7 @@ public static class NavigationService
             }
             catch (Exception ex)
             {
-                var message = $"Navigation error: {ex}";
-                Debug.WriteLine(message);
-                Console.WriteLine(message);
+                await ex.ShowErrorAsync().ConfigureAwait(false);
             }
         }).ConfigureAwait(true);
 

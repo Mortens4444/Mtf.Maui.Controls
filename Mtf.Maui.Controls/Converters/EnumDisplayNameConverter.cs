@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Mtf.Maui.Controls.Converters;
 
-internal class EnumDisplayNameConverter : IValueConverter
+public class EnumDisplayNameConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

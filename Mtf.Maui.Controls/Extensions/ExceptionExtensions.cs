@@ -1,13 +1,26 @@
-﻿using System.Diagnostics;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Mtf.Maui.Controls.Messages;
+using System.Diagnostics;
 using System.Text;
 
 namespace Mtf.Maui.Controls.Extensions;
 
 public static class ExceptionExtensions
 {
-    public static async Task ShowError(this Exception ex, Page? mainPage)
+    public static Task ShowError(this Exception ex)
     {
-        await MainThread.InvokeOnMainThreadAsync(async () =>
+        return MainThread.InvokeOnMainThreadAsync(() =>
+        {
+            var details = ex.GetDetails();
+            Debug.Write(details);
+            Console.WriteLine(details);
+            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(ex));
+        });
+    }
+
+    public static Task ShowErrorAsync(this Exception ex, Page? mainPage = null)
+    {
+        return MainThread.InvokeOnMainThreadAsync(async () =>
         {
             var details = ex.GetDetails();
             Debug.Write(details);
@@ -19,9 +32,9 @@ public static class ExceptionExtensions
             }
             else
             {
-                throw ex;
+                _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(ex));
             }
-        }).ConfigureAwait(true);
+        });
     }
 
     public static string GetDetails(this Exception exception)

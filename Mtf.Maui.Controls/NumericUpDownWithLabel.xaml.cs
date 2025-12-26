@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using Mtf.Maui.Controls.Extensions;
 using Mtf.Maui.Controls.Messages;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Windows.Input;
 
 namespace Mtf.Maui.Controls;
 
-public partial class NumericUpDownWithLabel : ContentView
+public partial class NumericUpDownWithLabel : ContentView, IDisposable
 {
     private CancellationTokenSource? repeatIncreaseCts;
     private CancellationTokenSource? repeatDecreaseCts;
@@ -382,7 +383,7 @@ public partial class NumericUpDownWithLabel : ContentView
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex);
+            ex.ShowError();
         }
         finally
         {
@@ -399,11 +400,38 @@ public partial class NumericUpDownWithLabel : ContentView
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex);
+            ex.ShowError();
         }
         finally
         {
             repeatDecreaseCts = null;
         }
+    }
+
+    private bool disposed;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            if (disposing)
+            {
+                repeatIncreaseCts?.Cancel();
+                repeatIncreaseCts?.Dispose();
+                repeatIncreaseCts = null;
+
+                repeatDecreaseCts?.Cancel();
+                repeatDecreaseCts?.Dispose();
+                repeatDecreaseCts = null;
+            }
+
+            disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 }

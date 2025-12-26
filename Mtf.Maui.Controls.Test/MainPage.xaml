@@ -21,6 +21,7 @@
 
             <mc:Hyperlink LinkLabel="Privacy Policy" Url="https://samu.us/mortens/HPrivacyPolicy.txt" HorizontalOptions="Center" />
 
+            <mc:CheckBoxWithLabel IsChecked="True" Label="Encode Whitespaces" TextColor="Blue" />
             <mc:CheckBoxWithLabel IsChecked="True" Label="Encode Whitespaces" TextColor="Red" />
 
             <mc:NumericUpDownWithLabel Grid.Column="1" Label="Price Multiplier"

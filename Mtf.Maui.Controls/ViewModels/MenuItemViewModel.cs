@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Mtf.Maui.Controls.Messages;
+using Mtf.Maui.Controls.Extensions;
 using Mtf.Maui.Controls.Services;
 using System.Windows.Input;
 
@@ -19,7 +18,7 @@ public partial class MenuItemViewModel : ObservableObject
 
     public const string Unknown = "unknown.scale-100";
 
-    public List<string> imageSource = new(new List<string> { Unknown });
+    private List<string> imageSource = new(new List<string> { Unknown });
 
     public List<string> ImageSource
     {
@@ -86,7 +85,7 @@ public partial class MenuItemViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _ = WeakReferenceMessenger.Default.Send(new ShowErrorMessage(ex));
+            await ex.ShowErrorAsync().ConfigureAwait(false);
         }
         finally
         {

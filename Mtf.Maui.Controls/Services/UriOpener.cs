@@ -2,5 +2,5 @@
 
 public static class UriOpener
 {
-    public static Task OpenUriAsync(string uri) => Launcher.OpenAsync(new Uri(uri));
+    public static Task OpenUriAsync(Uri uri) => Launcher.OpenAsync(uri);
 }

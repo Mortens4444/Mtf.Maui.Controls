@@ -18,7 +18,7 @@
         <Setter Property="WidthRequest" Value="40" />
         <Setter Property="Aspect" Value="AspectFit" />
     </Style>
-    
+
     <Style x:Key="MenuTextStyle" TargetType="Label" BasedOn="{StaticResource ColoredTextStyle}">
         <Setter Property="FontSize" Value="10" />
         <Setter Property="FontAttributes" Value="Bold" />
@@ -26,7 +26,6 @@
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
-
 
     <Style x:Key="SmallTextStyle" TargetType="Label" BasedOn="{StaticResource ColoredTextStyle}">
         <Setter Property="FontSize" Value="15" />

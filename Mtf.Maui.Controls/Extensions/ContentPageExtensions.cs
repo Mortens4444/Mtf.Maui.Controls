@@ -6,8 +6,14 @@ public static class ContentPageExtensions
 {
     public static Task<bool> ShowPageAsync(this ContentPage contentPage, Type itemType, Type pageType, object bindingContext)
     {
-        var genericAsyncMethod = typeof(ContentPageExtensions).GetMethod(nameof(CreatePageWithTypeAsync), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(itemType);
-        return (Task<bool>)genericAsyncMethod.Invoke(null, [contentPage, bindingContext, pageType]);
+        var genericAsyncMethod = typeof(ContentPageExtensions).GetMethod(nameof(CreatePageWithTypeAsync), BindingFlags.NonPublic | BindingFlags.Static) ?? throw new InvalidOperationException($"Method '{nameof(CreatePageWithTypeAsync)}' not found.");
+        var constructedMethod = genericAsyncMethod.MakeGenericMethod(itemType);
+        var result = constructedMethod.Invoke(null, new object[] { contentPage, bindingContext, pageType });
+        if (result is Task<bool> taskResult)
+        {
+            return taskResult;
+        }
+        throw new InvalidOperationException("Invoked method did not return Task<bool>.");
     }
 
     private static async Task<bool> CreatePageWithTypeAsync<T>(ContentPage contentPage, T matchingItem, Type type)

@@ -6,16 +6,28 @@ namespace Mtf.Maui.Controls.Test.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    public double PriceMultiplier { get; set; }
+    public double PriceMultiplier { get; set; } = 1.0;
 
-    [ObservableProperty]
     private double blockSize = 8;
-    
-    [ObservableProperty]
+    public double BlockSize
+    {
+        get => blockSize;
+        set => SetProperty(ref blockSize, value);
+    }
+
     private double minBlockSize = 8;
-    
-    [ObservableProperty]
+    public double MinBlockSize
+    {
+        get => minBlockSize;
+        set => SetProperty(ref minBlockSize, value);
+    }
+
     private double maxBlockSize = 800;
+    public double MaxBlockSize
+    {
+        get => maxBlockSize;
+        set => SetProperty(ref maxBlockSize, value);
+    }
 
     public ICommand ToggleTextCommand { get; }
     public ICommand IncrementCommand { get; }
@@ -37,14 +49,16 @@ public partial class MainViewModel : ObservableObject
 
         IncrementCommand = new Command(() =>
         {
-            BlockSize += 8;
+            //BlockSize += 8;
+            MinBlockSize = 80000;
             OnPropertyChanged(nameof(MinBlockSize));
         });
 
         DecrementCommand = new Command(() =>
         {
-            BlockSize -= 8;
-            OnPropertyChanged(nameof(MinBlockSize));
+            //BlockSize -= 8;
+            MaxBlockSize = 4;
+            OnPropertyChanged(nameof(MaxBlockSize));
         });
     }
 }
