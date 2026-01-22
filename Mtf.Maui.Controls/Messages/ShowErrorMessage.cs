@@ -5,9 +5,11 @@ namespace Mtf.Maui.Controls.Messages;
 
 public class ShowErrorMessage : ValueChangedMessage<string>
 {
+    public bool ShowInnerException { get; }
+
     public Exception? Exception { get; }
 
-    public ShowErrorMessage(Exception exception)
+    public ShowErrorMessage(Exception exception, bool showInnerException = true)
 #if DEBUG
         : base(exception?.GetDetails() ?? throw new ArgumentNullException(nameof(exception)))
 #else
@@ -15,12 +17,14 @@ public class ShowErrorMessage : ValueChangedMessage<string>
 #endif
     {
         Exception = exception;
+        ShowInnerException = showInnerException;
     }
 
-    public ShowErrorMessage(string title, Exception exception)
+    public ShowErrorMessage(string title, Exception exception, bool showInnerException = true)
         : base(exception.GetDetails(title))
     {
         Exception = exception;
+        ShowInnerException = showInnerException;
     }
 
     public ShowErrorMessage(string message)
