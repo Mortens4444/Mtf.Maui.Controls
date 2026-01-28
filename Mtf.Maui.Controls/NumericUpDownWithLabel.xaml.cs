@@ -11,6 +11,7 @@ namespace Mtf.Maui.Controls;
 
 public partial class NumericUpDownWithLabel : ContentView, IDisposable
 {
+    private bool disposed;
     private CancellationTokenSource? repeatIncreaseCts;
     private CancellationTokenSource? repeatDecreaseCts;
     private const int RepeatRate = 100;
@@ -187,20 +188,24 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                 {
                     break;
                 }
-                if (Value <= Minimum && !isIncrementing)
-                {
-                    Value = Minimum;
-                    break;
-                }
-                if (Value >= Maximum && isIncrementing)
-                {
-                    Value = Maximum;
-                    break;
-                }
+                //if (Value <= Minimum && !isIncrementing)
+                //{
+                //    Value = Minimum;
+                //    break;
+                //}
+                //if (Value >= Maximum && isIncrementing)
+                //{
+                //    Value = Maximum;
+                //    break;
+                //}
 
                 var command = isIncrementing ? IncrementCommand : DecrementCommand;
                 if (command != null)
                 {
+                    if (!command.CanExecute(null))
+                    {
+                        break;
+                    }
                     command.Execute(null);
                 }
                 else
@@ -407,8 +412,6 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
             repeatDecreaseCts = null;
         }
     }
-
-    private bool disposed;
 
     protected virtual void Dispose(bool disposing)
     {

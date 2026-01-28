@@ -49,15 +49,15 @@ public partial class MainViewModel : ObservableObject
 
         IncrementCommand = new Command(() =>
         {
-            //BlockSize += 8;
-            MinBlockSize = 80000;
+            BlockSize += 8;
+            //MinBlockSize = 80000;
             OnPropertyChanged(nameof(MinBlockSize));
         });
 
         DecrementCommand = new Command(() =>
         {
-            //BlockSize -= 8;
-            MaxBlockSize = 4;
+            BlockSize -= 8;
+            //MaxBlockSize = 4;
             OnPropertyChanged(nameof(MaxBlockSize));
         });
     }
