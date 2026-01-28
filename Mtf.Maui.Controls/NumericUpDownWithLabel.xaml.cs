@@ -116,7 +116,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
     {
         InitializeComponent();
         UpdateEntryText(true);
-        UpdateEnabledStates();
+        UpdateEnabledStateOfButtons();
     }
 
     private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue)
@@ -125,7 +125,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         {
             control.ValueChanged?.Invoke(control, new ValueChangedEventArgs((double)oldValue, (double)newValue));
             control.UpdateEntryText(false);
-            control.UpdateEnabledStates();
+            control.UpdateEnabledStateOfButtons();
         }
     }
 
@@ -137,7 +137,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         }
     }
 
-    private void UpdateEnabledStates()
+    public void UpdateEnabledStateOfButtons()
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
@@ -262,7 +262,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                         break;
                     }
                     command.Execute(null);
-                    UpdateEnabledStates();
+                    UpdateEnabledStateOfButtons();
                 }
                 else
                 {
@@ -289,7 +289,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                     }
 
                     UpdateEntryText(true);
-                    UpdateEnabledStates();
+                    UpdateEnabledStateOfButtons();
                 }
 
                 await Task.Delay(RepeatRate).ConfigureAwait(true);
@@ -411,7 +411,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         }
 
         control.UpdateEntryText(true);
-        control.UpdateEnabledStates();
+        control.UpdateEnabledStateOfButtons();
     }
 
     private static void OnMaximumChanged(BindableObject bindable, object oldValue, object newValue)
@@ -435,14 +435,14 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         }
 
         control.UpdateEntryText(true);
-        control.UpdateEnabledStates();
+        control.UpdateEnabledStateOfButtons();
     }
 
     private static void OnIncrementChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is NumericUpDownWithLabel control)
         {
-            control.UpdateEnabledStates();
+            control.UpdateEnabledStateOfButtons();
         }
     }
 
@@ -460,11 +460,11 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                 newCmd.CanExecuteChanged += control.Command_CanExecuteChanged;
             }
 
-            control.UpdateEnabledStates();
+            control.UpdateEnabledStateOfButtons();
         }
     }
 
-    private void Command_CanExecuteChanged(object? sender, EventArgs e) => UpdateEnabledStates();
+    private void Command_CanExecuteChanged(object? sender, EventArgs e) => UpdateEnabledStateOfButtons();
 
     private static void OnDecrementCommandChanged(BindableObject bindable, object oldValue, object newValue)
     {
@@ -480,7 +480,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                 newCmd.CanExecuteChanged += control.Command_CanExecuteChanged;
             }
 
-            control.UpdateEnabledStates();
+            control.UpdateEnabledStateOfButtons();
         }
     }
 
@@ -498,7 +498,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         finally
         {
             repeatIncreaseCts = null;
-            UpdateEnabledStates();
+            UpdateEnabledStateOfButtons();
         }
     }
 
@@ -516,7 +516,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         finally
         {
             repeatDecreaseCts = null;
-            UpdateEnabledStates();
+            UpdateEnabledStateOfButtons();
         }
     }
 
