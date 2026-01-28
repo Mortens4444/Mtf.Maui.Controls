@@ -26,15 +26,15 @@
                     Margin="0,0,5,0"
                     MaximumHeightRequest="44"
                     WidthRequest="44"
-                    PropertyChanged="DecreaseButton_PropertyChanged" />
+                    PropertyChanged="DecreaseButton_PropertyChanged"
+                    IsEnabled="{Binding CanDecrement}" />
 
             <Entry x:Name="ValueLabel"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
                    Keyboard="Numeric"
                    TextChanged="OnTextChanged"
-                   Unfocused="OnEntryUnfocused">
-            </Entry>
+                   Unfocused="OnEntryUnfocused" />
 
             <Button Text="+"
                     Pressed="OnIncrementPressed"
@@ -43,7 +43,8 @@
                     Margin="5,0,0,0"
                     MaximumHeightRequest="44"
                     WidthRequest="44"
-                    PropertyChanged="IncreaseButton_PropertyChanged" />
+                    PropertyChanged="IncreaseButton_PropertyChanged"
+                    IsEnabled="{Binding CanIncrement}" />
         </HorizontalStackLayout>
     </VerticalStackLayout>
 

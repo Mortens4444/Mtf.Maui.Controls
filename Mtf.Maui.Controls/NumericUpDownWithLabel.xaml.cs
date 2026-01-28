@@ -30,16 +30,25 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         BindableProperty.Create(nameof(Maximum), typeof(double), typeof(NumericUpDownWithLabel), 100.0, propertyChanged: OnMaximumChanged);
 
     public static readonly BindableProperty IncrementProperty =
-        BindableProperty.Create(nameof(Increment), typeof(double), typeof(NumericUpDownWithLabel), 1.0);
+        BindableProperty.Create(nameof(Increment), typeof(double), typeof(NumericUpDownWithLabel), 1.0, propertyChanged: OnIncrementChanged);
 
     public static readonly BindableProperty DecimalPlacesProperty =
         BindableProperty.Create(nameof(DecimalPlaces), typeof(int), typeof(NumericUpDownWithLabel), -1, propertyChanged: OnDecimalPlacesChanged);
 
     public static readonly BindableProperty IncrementCommandProperty =
-        BindableProperty.Create(nameof(IncrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel));
+        BindableProperty.Create(nameof(IncrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel), null, propertyChanged: OnIncrementCommandChanged);
 
     public static readonly BindableProperty DecrementCommandProperty =
-        BindableProperty.Create(nameof(DecrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel));
+        BindableProperty.Create(nameof(DecrementCommand), typeof(ICommand), typeof(NumericUpDownWithLabel), null, propertyChanged: OnDecrementCommandChanged);
+    
+    static readonly BindablePropertyKey CanIncrementPropertyKey =
+        BindableProperty.CreateReadOnly(nameof(CanIncrement), typeof(bool), typeof(NumericUpDownWithLabel), true);
+
+    static readonly BindablePropertyKey CanDecrementPropertyKey =
+        BindableProperty.CreateReadOnly(nameof(CanDecrement), typeof(bool), typeof(NumericUpDownWithLabel), true);
+
+    public static readonly BindableProperty CanIncrementProperty = CanIncrementPropertyKey.BindableProperty;
+    public static readonly BindableProperty CanDecrementProperty = CanDecrementPropertyKey.BindableProperty;
 
     public string Label
     {
@@ -89,12 +98,25 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         set => SetValue(DecrementCommandProperty, value);
     }
 
+    public bool CanIncrement
+    {
+        get => (bool)GetValue(CanIncrementProperty);
+        private set => SetValue(CanIncrementPropertyKey, value);
+    }
+
+    public bool CanDecrement
+    {
+        get => (bool)GetValue(CanDecrementProperty);
+        private set => SetValue(CanDecrementPropertyKey, value);
+    }
+
     public event EventHandler<ValueChangedEventArgs>? ValueChanged;
 
     public NumericUpDownWithLabel()
     {
         InitializeComponent();
         UpdateEntryText(true);
+        UpdateEnabledStates();
     }
 
     private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue)
@@ -103,6 +125,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         {
             control.ValueChanged?.Invoke(control, new ValueChangedEventArgs((double)oldValue, (double)newValue));
             control.UpdateEntryText(false);
+            control.UpdateEnabledStates();
         }
     }
 
@@ -112,6 +135,38 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         {
             control.UpdateEntryText(true);
         }
+    }
+
+    private void UpdateEnabledStates()
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (Increment <= 0)
+            {
+                CanIncrement = false;
+                CanDecrement = Value > Minimum;
+                return;
+            }
+
+            var nextInc = Math.Round(Value + Increment, InternalPrecision);
+            var nextDec = Math.Round(Value - Increment, InternalPrecision);
+
+            var incOk = nextInc <= Maximum;
+            var decOk = nextDec >= Minimum;
+
+            if (IncrementCommand != null && !IncrementCommand.CanExecute(null))
+            {
+                incOk = false;
+            }
+
+            if (DecrementCommand != null && !DecrementCommand.CanExecute(null))
+            {
+                decOk = false;
+            }
+
+            CanIncrement = incOk;
+            CanDecrement = decOk;
+        });
     }
 
     private void UpdateEntryText(bool force)
@@ -207,6 +262,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                         break;
                     }
                     command.Execute(null);
+                    UpdateEnabledStates();
                 }
                 else
                 {
@@ -233,6 +289,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                     }
 
                     UpdateEntryText(true);
+                    UpdateEnabledStates();
                 }
 
                 await Task.Delay(RepeatRate).ConfigureAwait(true);
@@ -354,6 +411,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         }
 
         control.UpdateEntryText(true);
+        control.UpdateEnabledStates();
     }
 
     private static void OnMaximumChanged(BindableObject bindable, object oldValue, object newValue)
@@ -377,6 +435,53 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         }
 
         control.UpdateEntryText(true);
+        control.UpdateEnabledStates();
+    }
+
+    private static void OnIncrementChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is NumericUpDownWithLabel control)
+        {
+            control.UpdateEnabledStates();
+        }
+    }
+
+    private static void OnIncrementCommandChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is NumericUpDownWithLabel control)
+        {
+            if (oldValue is ICommand oldCmd)
+            {
+                oldCmd.CanExecuteChanged -= control.Command_CanExecuteChanged;
+            }
+
+            if (newValue is ICommand newCmd)
+            {
+                newCmd.CanExecuteChanged += control.Command_CanExecuteChanged;
+            }
+
+            control.UpdateEnabledStates();
+        }
+    }
+
+    private void Command_CanExecuteChanged(object? sender, EventArgs e) => UpdateEnabledStates();
+
+    private static void OnDecrementCommandChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is NumericUpDownWithLabel control)
+        {
+            if (oldValue is ICommand oldCmd)
+            {
+                oldCmd.CanExecuteChanged -= control.Command_CanExecuteChanged;
+            }
+
+            if (newValue is ICommand newCmd)
+            {
+                newCmd.CanExecuteChanged += control.Command_CanExecuteChanged;
+            }
+
+            control.UpdateEnabledStates();
+        }
     }
 
     private void StopIncrease()
@@ -393,6 +498,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         finally
         {
             repeatIncreaseCts = null;
+            UpdateEnabledStates();
         }
     }
 
@@ -410,6 +516,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         finally
         {
             repeatDecreaseCts = null;
+            UpdateEnabledStates();
         }
     }
 
