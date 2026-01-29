@@ -16,6 +16,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
     private CancellationTokenSource? repeatDecreaseCts;
     private const int RepeatRate = 100;
     private const int InternalPrecision = 6;
+    private const double ComparisonEpsilon = 1e-9;
 
     public static readonly BindableProperty LabelProperty =
         BindableProperty.Create(nameof(Label), typeof(string), typeof(NumericUpDownWithLabel), String.Empty);
@@ -144,15 +145,15 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
             if (Increment <= 0)
             {
                 CanIncrement = false;
-                CanDecrement = Value > Minimum;
+                CanDecrement = Value > Minimum + ComparisonEpsilon;
                 return;
             }
 
             var nextInc = Math.Round(Value + Increment, InternalPrecision);
             var nextDec = Math.Round(Value - Increment, InternalPrecision);
 
-            var incOk = nextInc <= Maximum;
-            var decOk = nextDec >= Minimum;
+            var incOk = nextInc <= Maximum + ComparisonEpsilon;
+            var decOk = nextDec >= Minimum - ComparisonEpsilon;
 
             if (IncrementCommand != null)
             {
@@ -243,16 +244,6 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                 {
                     break;
                 }
-                //if (Value <= Minimum && !isIncrementing)
-                //{
-                //    Value = Minimum;
-                //    break;
-                //}
-                //if (Value >= Maximum && isIncrementing)
-                //{
-                //    Value = Maximum;
-                //    break;
-                //}
 
                 var command = isIncrementing ? IncrementCommand : DecrementCommand;
                 if (command != null)
@@ -464,7 +455,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         }
     }
 
-    private void Command_CanExecuteChanged(object? sender, EventArgs e) => UpdateEnabledStateOfButtons();
+    private void Command_CanExecuteChanged(object? sender, EventArgs e) => MainThread.BeginInvokeOnMainThread(UpdateEnabledStateOfButtons);
 
     private static void OnDecrementCommandChanged(BindableObject bindable, object oldValue, object newValue)
     {
