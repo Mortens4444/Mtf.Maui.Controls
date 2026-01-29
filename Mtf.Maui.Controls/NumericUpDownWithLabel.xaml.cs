@@ -142,6 +142,14 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
+            Debug.WriteLine("UpdateEnabledStateOfButtons called at MainThread.BeginInvokeOnMainThread beginning");
+            Debug.WriteLine($"Value: {Value}");
+            Debug.WriteLine($"Minimum: {Minimum}");
+            Debug.WriteLine($"Maximum: {Maximum}");
+            Debug.WriteLine($"Increment: {Increment}");
+            Debug.WriteLine($"CanIncrement: {CanIncrement}");
+            Debug.WriteLine($"CanDecrement: {CanDecrement}");
+
             if (Increment <= 0)
             {
                 CanIncrement = false;
@@ -167,6 +175,14 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
 
             CanIncrement = incOk;
             CanDecrement = decOk;
+
+            Debug.WriteLine("UpdateEnabledStateOfButtons finished at MainThread.BeginInvokeOnMainThread end");
+            Debug.WriteLine($"Value: {Value}");
+            Debug.WriteLine($"Minimum: {Minimum}");
+            Debug.WriteLine($"Maximum: {Maximum}");
+            Debug.WriteLine($"Increment: {Increment}");
+            Debug.WriteLine($"CanIncrement: {CanIncrement}");
+            Debug.WriteLine($"CanDecrement: {CanDecrement}");
         });
     }
 
@@ -255,7 +271,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                     command.Execute(null);
                     await Task.Yield();
 
-                    MainThread.BeginInvokeOnMainThread(UpdateEnabledStateOfButtons);
+                    UpdateEnabledStateOfButtons();
 
                 }
                 else
@@ -285,7 +301,7 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                     UpdateEntryText(true);
                     await Task.Yield();
 
-                    MainThread.BeginInvokeOnMainThread(UpdateEnabledStateOfButtons);
+                    UpdateEnabledStateOfButtons();
                 }
 
                 await Task.Delay(RepeatRate).ConfigureAwait(true);
