@@ -253,7 +253,10 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                         break;
                     }
                     command.Execute(null);
-                    UpdateEnabledStateOfButtons();
+                    await Task.Yield();
+
+                    MainThread.BeginInvokeOnMainThread(UpdateEnabledStateOfButtons);
+
                 }
                 else
                 {
@@ -280,7 +283,9 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
                     }
 
                     UpdateEntryText(true);
-                    UpdateEnabledStateOfButtons();
+                    await Task.Yield();
+
+                    MainThread.BeginInvokeOnMainThread(UpdateEnabledStateOfButtons);
                 }
 
                 await Task.Delay(RepeatRate).ConfigureAwait(true);
