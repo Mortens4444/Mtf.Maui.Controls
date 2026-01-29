@@ -154,14 +154,14 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
             var incOk = nextInc <= Maximum;
             var decOk = nextDec >= Minimum;
 
-            if (IncrementCommand != null && !IncrementCommand.CanExecute(null))
+            if (IncrementCommand != null)
             {
-                incOk = false;
+                incOk = Value < Maximum && IncrementCommand.CanExecute(null);
             }
 
-            if (DecrementCommand != null && !DecrementCommand.CanExecute(null))
+            if (DecrementCommand != null)
             {
-                decOk = false;
+                decOk = Value > Minimum && DecrementCommand.CanExecute(null);
             }
 
             CanIncrement = incOk;
