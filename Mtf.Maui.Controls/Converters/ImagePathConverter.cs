@@ -20,26 +20,26 @@ public class ImagePathConverter : IValueConverter
     {
         ArgumentNullException.ThrowIfNull(relativePaths);
 
+        if (relativePaths.Count == 0 || fileIndex < -1 || fileIndex >= relativePaths.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(fileIndex));
+        }
+
         var name = fileIndex == -1 ? $"Icons/{relativePaths[0]}_30x30" : relativePaths[fileIndex];
         var filename = String.Concat(name, ImageExtension);
 
-        if (fileIndex >= -1 && fileIndex < relativePaths.Count)
+        if (ImageSettings.UseOfflineImages)
         {
-            if (ImageSettings.UseOfflineImages)
-            {
-                return ImageSource.FromFile(filename);
-            }
-
-            var uri = String.Concat(ImageSettings.ImagesUrl, filename);
-            var cacheValidity = new TimeSpan(ImageSettings.NumberOfDaysToCacheImages, 0, 0, 0);
-            return new UriImageSource
-            {
-                Uri = new Uri(uri),
-                CacheValidity = cacheValidity,
-                CachingEnabled = true
-            };
+            return ImageSource.FromFile(filename);
         }
 
-        throw new ArgumentOutOfRangeException(nameof(fileIndex));
+        var uri = String.Concat(ImageSettings.ImagesUrl, filename);
+        var cacheValidity = new TimeSpan(ImageSettings.NumberOfDaysToCacheImages, 0, 0, 0);
+        return new UriImageSource
+        {
+            Uri = new Uri(uri),
+            CacheValidity = cacheValidity,
+            CachingEnabled = true
+        };
     }
 }

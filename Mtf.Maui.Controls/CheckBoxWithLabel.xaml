@@ -20,6 +20,7 @@
 
         <Label Text="{Binding Label}"
                TextColor="{Binding TextColor}"
+               IsEnabled="{Binding IsEnabled}"
                GestureRecognizers="{TapGestureRecognizer Command={Binding ToggleCommand}}"
                VerticalOptions="Center" />
     </HorizontalStackLayout>

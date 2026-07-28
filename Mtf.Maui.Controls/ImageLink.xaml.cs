@@ -23,7 +23,8 @@ public partial class ImageLink : ContentView
             });
 
     public static readonly BindableProperty ImageSourceProperty =
-        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(ImageLink), new List<string> { ImageLinkViewModel.Unknown },
+        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(ImageLink),
+            defaultValueCreator: _ => new List<string> { ImageLinkViewModel.Unknown },
             propertyChanged: (bindable, oldValue, newValue) =>
             {
                 var view = (ImageLink)bindable;

@@ -11,7 +11,7 @@ public class ShowErrorMessage : ValueChangedMessage<string>
 
     public ShowErrorMessage(Exception exception, bool showInnerException = true)
 #if DEBUG
-        : base(exception?.GetDetails() ?? throw new ArgumentNullException(nameof(exception)))
+        : base(exception?.GetDetails(exception.GetType().Name, showInnerException) ?? throw new ArgumentNullException(nameof(exception)))
 #else
         : base(exception?.Message ?? throw new ArgumentNullException(nameof(exception)))
 #endif
@@ -21,7 +21,7 @@ public class ShowErrorMessage : ValueChangedMessage<string>
     }
 
     public ShowErrorMessage(string title, Exception exception, bool showInnerException = true)
-        : base(exception.GetDetails(title))
+        : base(exception.GetDetails(title, showInnerException))
     {
         Exception = exception;
         ShowInnerException = showInnerException;

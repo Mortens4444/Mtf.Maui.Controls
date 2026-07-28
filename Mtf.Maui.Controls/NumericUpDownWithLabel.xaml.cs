@@ -142,18 +142,12 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            Debug.WriteLine("UpdateEnabledStateOfButtons called at MainThread.BeginInvokeOnMainThread beginning");
-            Debug.WriteLine($"Value: {Value}");
-            Debug.WriteLine($"Minimum: {Minimum}");
-            Debug.WriteLine($"Maximum: {Maximum}");
-            Debug.WriteLine($"Increment: {Increment}");
-            Debug.WriteLine($"CanIncrement: {CanIncrement}");
-            Debug.WriteLine($"CanDecrement: {CanDecrement}");
-
             if (Increment <= 0)
             {
                 CanIncrement = false;
                 CanDecrement = Value > Minimum + ComparisonEpsilon;
+                OnPropertyChanged(nameof(CanIncrement));
+                OnPropertyChanged(nameof(CanDecrement));
                 return;
             }
 
@@ -176,13 +170,8 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
             CanIncrement = incOk;
             CanDecrement = decOk;
 
-            Debug.WriteLine("UpdateEnabledStateOfButtons finished at MainThread.BeginInvokeOnMainThread end");
-            Debug.WriteLine($"Value: {Value}");
-            Debug.WriteLine($"Minimum: {Minimum}");
-            Debug.WriteLine($"Maximum: {Maximum}");
-            Debug.WriteLine($"Increment: {Increment}");
-            Debug.WriteLine($"CanIncrement: {CanIncrement}");
-            Debug.WriteLine($"CanDecrement: {CanDecrement}");
+            OnPropertyChanged(nameof(CanIncrement));
+            OnPropertyChanged(nameof(CanDecrement));
         });
     }
 

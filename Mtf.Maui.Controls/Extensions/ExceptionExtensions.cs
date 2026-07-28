@@ -44,7 +44,7 @@ public static class ExceptionExtensions
             GetDetails(exception, exception.GetType().Name);
     }
 
-    public static string GetDetails(this Exception exception, string title)
+    public static string GetDetails(this Exception exception, string title, bool includeInnerExceptions = true)
     {
         var result = new StringBuilder();
         var ex = exception;
@@ -53,7 +53,7 @@ public static class ExceptionExtensions
         {
             var exceptionDetails = GetExceptionDetails($"{title} {i++}", ex);
             _ = result.AppendLine(exceptionDetails);
-            ex = ex.InnerException;
+            ex = includeInnerExceptions ? ex.InnerException : null;
         }
 
         return result.ToString();

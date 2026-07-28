@@ -1,3 +1,4 @@
+using Mtf.Maui.Controls.Extensions;
 using Mtf.Maui.Controls.Services;
 using Mtf.Maui.Controls.ViewModels;
 
@@ -5,6 +6,8 @@ namespace Mtf.Maui.Controls;
 
 public partial class Hyperlink : ContentView
 {
+    private int isNavigating;
+
     public static readonly BindableProperty UrlProperty =
         BindableProperty.Create(nameof(Url), typeof(string), typeof(Hyperlink),
             propertyChanged: (bindable, oldValue, newValue) =>
@@ -29,7 +32,7 @@ public partial class Hyperlink : ContentView
         {
             Command = new Command(() =>
             {
-                Task.Run(async () => await Hyperlink_RequestNavigate(this, Url).ConfigureAwait(false));
+                Task.Run(() => Hyperlink_RequestNavigateAsync(Url));
             })
         });
         GestureRecognizers.Add(new PointerGestureRecognizer
@@ -55,11 +58,27 @@ public partial class Hyperlink : ContentView
 
     private void OnPointerExited() => HyperlinkLabel.TextColor = Colors.LightBlue;
 
-    private static async Task Hyperlink_RequestNavigate(object _, string uri)
+    private async Task Hyperlink_RequestNavigateAsync(string uri)
     {
-        if (Uri.TryCreate(uri, UriKind.Absolute, out var uriResult))
+        try
         {
-            _ = await Launcher.OpenAsync(uriResult).ConfigureAwait(false);
+            if (String.IsNullOrWhiteSpace(uri) || Interlocked.Exchange(ref isNavigating, 1) == 1)
+            {
+                return;
+            }
+
+            if (Uri.TryCreate(uri, UriKind.Absolute, out var uriResult))
+            {
+                _ = await Launcher.OpenAsync(uriResult).ConfigureAwait(false);
+            }
+        }
+        catch (Exception ex)
+        {
+            await ex.ShowErrorAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            Interlocked.Exchange(ref isNavigating, 0);
         }
     }
 }

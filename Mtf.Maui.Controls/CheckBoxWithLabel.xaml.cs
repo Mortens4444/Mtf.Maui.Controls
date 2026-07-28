@@ -31,7 +31,10 @@ public partial class CheckBoxWithLabel : ContentView
 
     public Command ToggleCommand => new(() =>
     {
-        checkBox.IsChecked = !checkBox.IsChecked;
+        if (IsEnabled)
+        {
+            checkBox.IsChecked = !checkBox.IsChecked;
+        }
     });
 
     public CheckBoxWithLabel() => InitializeComponent();

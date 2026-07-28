@@ -13,7 +13,7 @@ public partial class EntryWithLabel : ContentView
         BindableProperty.Create(nameof(EntryTextColor), typeof(Color), typeof(EntryWithLabel), Colors.White);
 
     public static readonly BindableProperty EntryMinimumWidthRequestProperty =
-        BindableProperty.Create(nameof(EntryMinimumWidthRequestProperty), typeof(int), typeof(EntryWithLabel), 50);
+        BindableProperty.Create(nameof(EntryMinimumWidthRequest), typeof(int), typeof(EntryWithLabel), 50);
 
     public static readonly BindableProperty EntryMinimumHeightRequestProperty =
         BindableProperty.Create(nameof(EntryMinimumHeightRequest), typeof(int), typeof(EntryWithLabel), 20);

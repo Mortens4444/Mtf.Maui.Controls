@@ -39,14 +39,17 @@ public partial class ToggleButton : ContentView
         ToggleVisibilityCommand = new Command(
             () =>
             {
-                var descendants = (VisualElement?.Parent?.GetVisualTreeDescendants() ?? []).Where(element => element is ContentView and
-                    not ToggleButton and
-                    not UriOpenerButtonWithLabel);
-                foreach (var descendant in descendants)
+                if (VisualElement?.Parent is Layout parentLayout)
                 {
-                    if (descendant is VisualElement visualElement)
+                    var siblings = parentLayout.Children.Where(child => child is ContentView and
+                        not ToggleButton and
+                        not UriOpenerButtonWithLabel);
+                    foreach (var sibling in siblings)
                     {
-                        visualElement.IsVisible = false;
+                        if (sibling is VisualElement visualElement)
+                        {
+                            visualElement.IsVisible = false;
+                        }
                     }
                 }
                 if (VisualElement != null)

@@ -24,7 +24,8 @@ public partial class MenuItem : ContentView
             });
 
     public static readonly BindableProperty ImageSourceProperty =
-        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(MenuItem), new List<string> { MenuItemViewModel.Unknown },
+        BindableProperty.Create(nameof(ImageSource), typeof(List<string>), typeof(MenuItem),
+            defaultValueCreator: _ => new List<string> { MenuItemViewModel.Unknown },
             propertyChanged: (bindable, oldValue, newValue) =>
             {
                 var view = (MenuItem)bindable;
