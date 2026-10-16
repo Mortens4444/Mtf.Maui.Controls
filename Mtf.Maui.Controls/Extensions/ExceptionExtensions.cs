@@ -28,7 +28,7 @@ public static class ExceptionExtensions
 
             if (mainPage != null)
             {
-                await mainPage.DisplayAlert("Unhandled Exception", ex.GetLastInnerExceptionMessage(), "OK").ConfigureAwait(true);
+                await mainPage.DisplayAlertAsync("Unhandled Exception", ex.GetLastInnerExceptionMessage(), "OK").ConfigureAwait(true);
             }
             else
             {

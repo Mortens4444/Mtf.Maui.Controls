@@ -66,13 +66,13 @@ public partial class MenuItemViewModel : ObservableObject
 
     private async Task NavigateToPageAsync()
     {
+        if (Interlocked.Exchange(ref isNavigating, 1) == 1)
+        {
+            return;
+        }
+
         try
         {
-            if (Interlocked.Exchange(ref isNavigating, 1) == 1)
-            {
-                return;
-            }
-
             var page = await NavigationService.NavigateToPageAsync(PageType, Parameter).ConfigureAwait(false);
 
             void disappearingHandler(object? sender, EventArgs e)

@@ -300,11 +300,17 @@ public partial class NumericUpDownWithLabel : ContentView, IDisposable
         {
             if (isIncrementing)
             {
-                StopIncrease();
+                if (ReferenceEquals(repeatIncreaseCts, cancellationTokenSource))
+                {
+                    StopIncrease();
+                }
             }
             else
             {
-                StopDecrease();
+                if (ReferenceEquals(repeatDecreaseCts, cancellationTokenSource))
+                {
+                    StopDecrease();
+                }
             }
         }
     }

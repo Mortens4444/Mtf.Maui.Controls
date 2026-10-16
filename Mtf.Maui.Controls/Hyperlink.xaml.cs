@@ -60,13 +60,13 @@ public partial class Hyperlink : ContentView
 
     private async Task Hyperlink_RequestNavigateAsync(string uri)
     {
+        if (String.IsNullOrWhiteSpace(uri) || Interlocked.Exchange(ref isNavigating, 1) == 1)
+        {
+            return;
+        }
+
         try
         {
-            if (String.IsNullOrWhiteSpace(uri) || Interlocked.Exchange(ref isNavigating, 1) == 1)
-            {
-                return;
-            }
-
             if (Uri.TryCreate(uri, UriKind.Absolute, out var uriResult))
             {
                 _ = await Launcher.OpenAsync(uriResult).ConfigureAwait(false);

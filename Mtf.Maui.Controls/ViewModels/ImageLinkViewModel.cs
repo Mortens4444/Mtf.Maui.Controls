@@ -44,13 +44,13 @@ public partial class ImageLinkViewModel : ObservableObject
 
     private async Task NavigateToUrl()
     {
+        if (String.IsNullOrWhiteSpace(Url) || Interlocked.Exchange(ref isNavigating, 1) == 1)
+        {
+            return;
+        }
+
         try
         {
-            if (String.IsNullOrWhiteSpace(Url) || Interlocked.Exchange(ref isNavigating, 1) == 1)
-            {
-                return;
-            }
-
             if (Uri.TryCreate(Url, UriKind.Absolute, out var uriResult))
             {
                 try
